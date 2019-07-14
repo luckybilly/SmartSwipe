@@ -24,6 +24,8 @@ In addition, to facilitate the use, `SmartSwipe` encapsulates the following tool
 
 ## Demo
 
+[download demo.apk](https://github.com/luckybilly/SmartSwipe/raw/master/app-release.apk)
+
 Stretch<br/>[StretchConsumer][StretchConsumer]|Space<br/>[SpaceConsumer][SpaceConsumer]|Translucent Sliding<br/>[TranslucentSlidingConsumer][TranslucentSlidingConsumer]
 :---:|:---:|:---:
 <img width="200" src="images/stretchConsumer.gif">|<img width="200" src="images/spaceConsumer.gif">|<img width="200" src="images/translucentSlidingConsumer.gif">
