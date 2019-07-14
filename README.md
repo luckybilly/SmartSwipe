@@ -83,7 +83,7 @@ compile 'com.billy.android:smart-swipe:latestVersion'
 compile 'com.billy.android:smart-swipe-x:latestVersion'
 ```
 
-Most of `SmartSwipe` can be used by chain programming in a single line code. The design style of API is as follows:
+`SmartSwipe` can be used by chain programming within a single line code. The usage of API looks like follow:
 
 ```java
 SmartSwipe.wrap(...) 		//view or Activity
