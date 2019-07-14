@@ -11,7 +11,7 @@ latest version| [![Download](https://api.bintray.com/packages/hellobilly/android
 
 
 
-[中文文档](https://luckybilly.github.io/SmartSwipe-tutorial/)
+[中文文档，更详尽](https://luckybilly.github.io/SmartSwipe-tutorial/)
 
 A smart swipe android library helps you make View (and Activity) swipes easier.
 
