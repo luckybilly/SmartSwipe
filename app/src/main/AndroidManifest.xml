@@ -1,0 +1,33 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" package="com.billy.android.swipe.demo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:allowBackup="true"
+                 android:name=".MyApp"
+                 android:label="@string/app_name"
+                 android:icon="@mipmap/ic_launcher"
+                 android:roundIcon="@mipmap/ic_launcher_round"
+                 android:supportsRtl="true"
+                 android:theme="@style/AppTheme" tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".consumer.StretchConsumerActivity" />
+        <activity android:name=".consumer.SlidingConsumerActivity" />
+        <activity android:name=".consumer.SpaceConsumerActivity" />
+        <activity android:name=".consumer.DrawerConsumerActivity" />
+        <activity android:name=".consumer.TranslucentConsumerActivity" />
+        <activity android:name=".consumer.SwipeBackBezierConsumerActivity" />
+        <activity android:name=".consumer.SwipeBackTranslucentConsumerActivity" />
+        <activity android:name=".consumer.SwipeBackStayConsumerActivity" />
+        <activity android:name=".consumer.ImageViewerActivity" />
+        <activity android:name=".consumer.SwipeBackDoorConsumerActivity" />
+        <activity android:name=".consumer.DoorConsumerActivity" />
+        <activity android:name=".consumer.SwipeBackShuttersConsumerActivity" />
+        <activity android:name=".consumer.ShuttersConsumerActivity" />
+
+    </application>
+</manifest>

@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">SmartSwipe</string>
+    <string name="demo_drawer_ui_item_text">Interpolator:\n%s</string>
+    <string name="demo_drawer_ui_item_text_delete">Delete</string>
+    <string name="demo_ui_DrawerConsumer">DrawerConsumer</string>
+    <string name="demo_ui_SpaceConsumer">SpaceConsumer</string>
+    <string name="demo_ui_StretchConsumer">StretchConsumer</string>
+    <string name="demo_ui_BezierBackConsumer">BezierBackConsumer</string>
+    <string name="demo_ui_StayConsumer">StayConsumer</string>
+    <string name="demo_ui_SlidingConsumer">SlidingConsumer</string>
+    <string name="demo_ui_TranslucentSlidingConsumer">TranslucentSlidingConsumer</string>
+    <string name="demo_ui_ActivitySlidingBackConsumer">ActivitySlidingBackConsumer</string>
+    <string name="demo_ui_DoorConsumer">DoorConsumer</string>
+    <string name="demo_ui_ActivityDoorBackConsumer">ActivityDoorBackConsumer</string>
+    <string name="demo_ui_ShuttersConsumer">ShuttersConsumer</string>
+    <string name="demo_ui_ActivityShuttersBackConsumer">ActivityShuttersBackConsumer</string>
+    <string name="demo_description_SwipeBackBezierConsumer">Bezier swipe back, activity not move, show bezier at the direction edge which you are swiping.\n\n------swipe-to-finish-activity-->\n\nEnjoy yourself with left/top/right/bottom directions.</string>
+    <string name="demo_description_SwipeBackStayConsumer">swipe to finish activity, activity not move while swiping.\n\n------swipe-to-finish-activity-->\n\nEnjoy yourself with left/top/right/bottom directions.</string>
+    <string name="demo_description_SwipeBackTranslucentConsumer">swipe to finish activity, the previous activity shows behind.\n\n------swipe-to-finish-activity-->\n\nEnjoy yourself with left/top/right/bottom directions.</string>
+    <string name="demo_description_ActivityDoorBackConsumer">swipe to finish activity, the previous activity shows behind.\n\n------swipe-to-finish-activity-->\n\nEnjoy yourself with left/top/right/bottom directions.</string>
+    <string name="demo_description_ActivityShuttersBackConsumer">swipe to finish activity, the previous activity shows behind.\n\n------swipe-to-finish-activity-->\n\nEnjoy yourself with left/top/right/bottom directions.</string>
+    <string name="demo_main_group_main_ui">Drawer with DrawerConsumer or SlidingConsumer:</string>
+    <string name="demo_main_group_main_ui_name">name:</string>
+    <string name="demo_main_group_main_ui_relative_move_factor">Relative Factor:</string>
+    <string name="demo_main_group_main_ui_edge_size">Edge size:</string>
+    <string name="demo_main_group_ui_edge_full">full screen</string>
+    <string name="demo_main_author">Author: Billy</string>
+    <string name="demo_main_group_wrap_view">Swipe View 4 directions: L/R/T/B</string>
+    <string name="demo_main_menu_description">Try dragging this menu vertically!</string>
+    <string name="demo_app_cover_desc">This is a cover, Drag it!</string>
+    <string name="demo_cover_shutters_leaves_count">LeavesCount:</string>
+    <string name="demo_cover_shutters_refreshable">Refreshable</string>
+    <string name="demo_main_group_cover_btns">Show app cover:</string>
+    <string name="cover_shutters">shutters</string>
+    <string name="cover_drawer">drawer</string>
+    <string name="cover_door">door</string>
+
+    <string-array name="demo_names">
+        <item>Anna</item>
+        <item>Lily</item>
+        <item>Nico</item>
+        <item>Nancy</item>
+        <item>Lulu</item>
+        <item>Candy</item>
+        <item>Emma</item>
+        <item>Jessica</item>
+        <item>Amy</item>
+        <item>Sophia</item>
+        <item>Helen</item>
+        <item>Rose</item>
+        <item>Xaviera</item>
+        <item>Nataly</item>
+        <item>Paris</item>
+        <item>Yazmin</item>
+        <item>Jennifer</item>
+        <item>Perla</item>
+        <item>Yuki</item>
+        <item>Nia</item>
+    </string-array>
+    <string-array name="demo_messages">
+        <item>Hello! Nice to meet you!</item>
+        <item>Nice day, play with me please</item>
+        <item>Wow, That sounds very good</item>
+        <item>Stop coding, shopping please!</item>
+        <item>OK! Enjoy yourself now</item>
+        <item>did u hear that?</item>
+        <item>are you OK? are you OK?</item>
+        <item>need 2 go now, see you!</item>
+        <item>lol, haha.......</item>
+        <item>[image]</item>
+        <item>hi, my name is helen</item>
+        <item>hey there, make me fun</item>
+        <item>thx</item>
+        <item>good job, i like it</item>
+        <item>where are you now</item>
+        <item>yes</item>
+        <item>OK</item>
+        <item>nice</item>
+        <item>emmm</item>
+        <item>wooo hahaha… you are so funny</item>
+    </string-array>
+    <string-array name="demo_sliding_ui_messages">
+        <item>This page demo for what?</item>
+        <item>I know, it is SlidingConsumer</item>
+        <item>Yes, slide left and right on item</item>
+        <item>It wraps item with RecyclerView!</item>
+        <item>enabled horizontal directions</item>
+        <item>extension view shows behind</item>
+        <item>with different relative factor</item>
+        <item>Managed them as RadioGroup</item>
+        <item>When sliding, other will close automatically!</item>
+        <item>Wrap RecyclerView to refresh and load more</item>
+        <item>Notice:behindMode and not edge affinity</item>
+        <item>Notice:expandable is false</item>
+        <item>and finish this Activity</item>
+        <item>via swipe left edge to right</item>
+        <item>click item to ImageViewerActivity</item>
+        <item>and then</item>
+        <item>drag image from top to down</item>
+        <item>and you will be here once more</item>
+        <item>or swipe from left edge to right</item>
+        <item>yes</item>
+    </string-array>
+    <string-array name="demo_drawer_ui_messages">
+        <item>This page demo for what?</item>
+        <item>I know, it is DrawerConsumer</item>
+        <item>Yes, slide left and right on item</item>
+        <item>It wraps RecyclerView items!</item>
+        <item>enabled horizontal directions</item>
+        <item>extension view shows above</item>
+        <item>Managed them as RadioGroup</item>
+        <item>When sliding, other will close automatically!</item>
+        <item>Wrap RecyclerView to refresh and load more</item>
+        <item>Notice:scaleMode</item>
+        <item>Notice:expandable is true</item>
+        <item>finish this Activity by:</item>
+        <item>swipe left edge to right</item>
+        <item>click item to ImageViewerActivity</item>
+        <item>and then</item>
+        <item>drag image from top to down</item>
+        <item>and you will be here once more</item>
+        <item>or</item>
+        <item>swipe from left edge to right</item>
+        <item>yes</item>
+    </string-array>
+</resources>

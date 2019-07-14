@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    >
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:padding="20dp">
+            <ImageView android:layout_width="50dp" android:layout_height="50dp"
+                android:src="@drawable/profile"
+               android:id="@+id/avatar"
+            />
+            <TextView style="@style/main_activity_text_view" android:text="@string/demo_main_author"
+                      android:layout_marginLeft="20dp" android:layout_toRightOf="@id/avatar"
+            />
+            <TextView style="@style/main_activity_text_view" android:text="@string/demo_main_menu_description"
+                      android:layout_below="@id/avatar"
+            />
+        </RelativeLayout>
+        <View style="@style/divider_horizontal"/>
+        <TextView android:onClick="toDoorConsumerActivity" android:text="@string/demo_ui_DoorConsumer" style="@style/menu_text_view" />
+
+        <View style="@style/divider_horizontal"/>
+        <TextView android:onClick="toShuttersConsumerActivity" android:text="@string/demo_ui_ShuttersConsumer" style="@style/menu_text_view" />
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toSpaceConsumerActivity" android:text="@string/demo_ui_SpaceConsumer" style="@style/menu_text_view" />
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toStretchConsumerActivity" android:text="@string/demo_ui_StretchConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toDrawerConsumerActivity" android:text="@string/demo_ui_DrawerConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+        <TextView android:onClick="toSlideConsumerActivity" android:text="@string/demo_ui_SlidingConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toTranslucentConsumerActivity" android:text="@string/demo_ui_TranslucentSlidingConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toStayConsumerActivity" android:text="@string/demo_ui_StayConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+        <TextView  android:onClick="toBezierConsumerActivity" android:text="@string/demo_ui_BezierBackConsumer" style="@style/menu_text_view"/>
+
+        <View style="@style/divider_horizontal"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

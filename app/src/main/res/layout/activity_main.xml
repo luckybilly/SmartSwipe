@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+>
+    <include android:id="@+id/title" layout="@layout/layout_title" />
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        >
+        <LinearLayout android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical">
+            <TextView android:text="@string/demo_main_group_main_ui" style="@style/main_activity_text_view"/>
+            <LinearLayout style="@style/main_activity_group_panel" android:layout_height="50dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/demo_main_group_main_ui_name" style="@style/main_activity_text_view"/>
+                <TextView android:id="@+id/main_ui_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/colorPrimaryDark" style="@style/main_activity_text_view"/>
+                <ImageView android:id="@+id/main_ui_toggle" android:src="@drawable/icon_change" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout style="@style/main_activity_group_panel" android:paddingTop="10dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/demo_main_group_main_ui_edge_size" style="@style/main_activity_text_view"/>
+                <TextView android:id="@+id/main_ui_edge_size" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textColor="@color/colorPrimaryDark" style="@style/main_activity_text_view"/>
+                <SeekBar android:id="@+id/main_ui_edge_size_seek_bar" android:layout_width="150dp" android:layout_height="wrap_content" android:max="400" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/main_ui_slide_panel" style="@style/main_activity_group_panel" android:paddingTop="20dp" android:paddingBottom="10dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/demo_main_group_main_ui_relative_move_factor" style="@style/main_activity_text_view"/>
+                <TextView android:id="@+id/main_ui_slide_factor" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textColor="@color/colorPrimaryDark" style="@style/main_activity_text_view"/>
+                <SeekBar android:id="@+id/main_ui_slide_factor_seek_bar" android:layout_width="150dp" android:layout_height="wrap_content" android:max="100" />
+            </LinearLayout>
+
+            <TextView  android:text="@string/demo_main_group_wrap_view" style="@style/main_activity_text_view"/>
+            <com.billy.android.swipe.SmartSwipeWrapper
+                    android:id="@+id/main_ui_wrap_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/menu_item_bg"
+            >
+                <LinearLayout app:layout_gravity="right|left" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent">
+                    <com.like.LikeButton
+                            app:icon_type="heart"
+                            app:icon_size="25dp"
+                            android:id="@+id/star_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" android:background="#15BABA"/>
+                    <com.like.LikeButton
+                            app:icon_type="Star"
+                            app:icon_size="25dp"
+                            android:id="@+id/like_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" android:background="#CBECCC"/>
+                </LinearLayout>
+                <TextView android:background="#f2f2f2"
+                          android:layout_height="match_parent"
+                          android:layout_width="match_parent"
+                          android:gravity="center"
+                          android:text="@string/demo_main_author" />
+                <com.like.LikeButton
+                        app:icon_type="heart"
+                        app:icon_size="25dp"
+                        app:layout_gravity="top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:background="#15BABA"/>
+                <com.like.LikeButton
+                        app:icon_type="Thumb"
+                        app:icon_size="25dp"
+                        app:layout_gravity="bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:background="#CBECCC"/>
+            </com.billy.android.swipe.SmartSwipeWrapper>
+
+            <TextView  android:text="@string/demo_main_group_cover_btns" style="@style/main_activity_text_view"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#FFF2F2F2" android:padding="10dp">
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/cover_door" android:onClick="showDoorCover"/>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/cover_shutters" android:onClick="showShuttersCover"/>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/cover_drawer" android:onClick="showDrawerCover"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/banner" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+    <RelativeLayout android:id="@+id/cover" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView
+                android:id="@+id/iv_cover"
+                android:src="@drawable/cover"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <com.billy.android.swipe.demo.FallingView
+                android:id="@+id/falling_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"
+                android:text="@string/demo_app_cover_desc"
+                android:gravity="center_horizontal"
+                android:id="@+id/tv_desc"
+        />
+        <ImageView android:layout_below="@id/tv_desc"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/four_directions"
+                   android:layout_centerHorizontal="true"/>
+        <LinearLayout android:orientation="vertical" android:background="#4FFFFFFF"
+                      android:gravity="center_horizontal" android:visibility="gone"
+                      android:id="@+id/panel_shutters" android:layout_width="match_parent"
+                      android:layout_height="wrap_content" android:padding="50dp"
+        >
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/demo_cover_shutters_leaves_count" android:textColor="@color/colorPrimaryDark" />
+                <TextView android:id="@+id/cover_shutters_leaves_count_number" android:layout_width="60dp" android:layout_height="wrap_content" android:textColor="@color/colorPrimary" android:gravity="center_horizontal"/>
+                <SeekBar android:id="@+id/cover_shutters_leaves_count_seek_bar" android:layout_width="match_parent" android:layout_height="20dp" android:max="20" />
+            </LinearLayout>
+            <CheckBox android:id="@+id/cover_shutters_refreshable"
+                      android:text="@string/demo_cover_shutters_refreshable"
+                      android:textColor="@color/colorPrimaryDark"
+                      android:layout_gravity="center_horizontal"
+                      android:onClick="toggleShuttersRefresh"
+                      android:checked="true"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="#4FFFFFFF" android:gravity="center_horizontal" android:visibility="gone" android:id="@+id/panel_door" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="50dp">
+            <CheckBox android:id="@+id/cover_door_refreshable"
+                      android:text="@string/demo_cover_shutters_refreshable"
+                      android:textColor="@color/colorPrimaryDark"
+                      android:layout_gravity="center_horizontal"
+                      android:onClick="toggleShuttersRefresh"
+                      android:checked="true"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="ssr_header_pulling">下拉刷新</string>
+    <string name="ssr_header_release">释放刷新</string>
+    <string name="ssr_header_refreshing">正在刷新…</string>
+    <string name="ssr_header_finish">刷新完成</string>
+    <string name="ssr_header_failed">刷新失败</string>
+
+    <string name="ssr_footer_pulling">上拉加载</string>
+    <string name="ssr_footer_release">释放加载</string>
+    <string name="ssr_footer_refreshing">正在加载…</string>
+    <string name="ssr_footer_finish">加载成功</string>
+    <string name="ssr_footer_failed">加载失败</string>
+    <string name="ssr_footer_no_more_data">已全部加载完成</string>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="ssr_header_pulling">Pull To Refresh</string>
+    <string name="ssr_header_release">Release To Refresh</string>
+    <string name="ssr_header_refreshing">Refreshing…</string>
+    <string name="ssr_header_finish">Refresh Success</string>
+    <string name="ssr_header_failed">Refresh Failed</string>
+
+    <string name="ssr_footer_pulling">Pull To Load More</string>
+    <string name="ssr_footer_release">Release To Load More</string>
+    <string name="ssr_footer_refreshing">Wait for Loading…</string>
+    <string name="ssr_footer_finish">Load Success</string>
+    <string name="ssr_footer_failed">Load Failed</string>
+    <string name="ssr_footer_no_more_data">All Data Loaded</string>
+</resources>

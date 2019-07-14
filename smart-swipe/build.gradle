@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minVersion
+        targetSdkVersion rootProject.targetVersion
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+}
+
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'smart-swipe'
+
+    publishedGroupId = 'com.billy.android'
+    libraryName = 'SmartSwipe'
+    artifact = 'smart-swipe'
+
+    libraryDescription = 'Make swipe easier for Android View and Activity'
+
+    siteUrl = 'https://github.com/luckybilly/SmartSwipe'
+    gitUrl = 'https://github.com/luckybilly/SmartSwipe.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'billy'
+    developerName = 'billy'
+    developerEmail = 'okkanan@hotmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: rootProject.file('bintray.gradle')

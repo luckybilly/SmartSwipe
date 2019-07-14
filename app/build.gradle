@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion rootProject.compileVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minVersion
+        targetSdkVersion rootProject.targetVersion
+        applicationId "com.billy.android.swipe.demo"
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        releaseconfig {
+            storeFile rootProject.file('swipe.keystore')
+            storePassword '111111'
+            keyAlias 'swipe'
+            keyPassword '111111'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.releaseconfig
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            signingConfig signingConfigs.releaseconfig
+            debuggable false
+            shrinkResources true
+        }
+    }
+    lintOptions{
+        abortOnError false
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+    implementation project(':smart-swipe')
+
+    //switch to android support environment, should delete configs within projectRoot/gradle.properties as below:
+    //  android.useAndroidX=true
+    //  android.enableJetifier=true
+//    implementation project(':smart-swipe-support')
+//    implementation 'com.android.support:appcompat-v7:28.0.0'
+//    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation project(':smart-swipe-x')
+}

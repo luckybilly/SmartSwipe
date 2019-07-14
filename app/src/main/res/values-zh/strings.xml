@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SmartSwipe</string>
+    <string name="demo_drawer_ui_item_text">插值器:\n%s</string>
+    <string name="demo_drawer_ui_item_text_delete">删除</string>
+    <string name="demo_description_SwipeBackBezierConsumer">贝塞尔曲线的滑动返回。\nActivity在滑动时保持不动，在滑动方向的边缘显示贝塞尔曲线。\n可以尝试上下左右4个方向拖动</string>
+    <string name="demo_description_SwipeBackStayConsumer">仿手机QQ侧滑返回。\nActivity在滑动时保持不动，根据滑动结束时的滑动速率来确定是否关闭当前activity。\n可以尝试上下左右4个方向滑动</string>
+    <string name="demo_description_SwipeBackTranslucentConsumer">仿微信、网易考拉侧滑返回。\n可以透视前一个activity，并可设置前一个Activity的同步移动交错因子。\n可以尝试上下左右4个方向滑动</string>
+    <string name="demo_description_ActivityDoorBackConsumer">开门返回。\n可以透视前一个activity，滑动过程中当前activity从中间向两边（左右 或 上下）分离，就像开门一样。\n可以尝试上下左右4个方向滑动</string>
+    <string name="demo_description_ActivityShuttersBackConsumer">百叶窗返回。\n可以透视前一个activity，滑动当前activity如开启百叶窗一样。\n可以尝试上下左右4个方向滑动</string>
+    <string name="demo_main_group_main_ui">侧边栏(DrawerConsumer或SlidingConsumer):</string>
+    <string name="demo_main_group_main_ui_name">名称:</string>
+    <string name="demo_main_group_main_ui_relative_move_factor">关联移动因子:</string>
+    <string name="demo_main_group_main_ui_edge_size">有效边缘尺寸:</string>
+    <string name="demo_main_group_ui_edge_full">全屏</string>
+    <string name="demo_main_author">作者: Billy</string>
+    <string name="demo_main_group_wrap_view">上下左右4个方向侧滑</string>
+    <string name="demo_main_menu_description">试试纵向拖动目录</string>
+    <string name="demo_app_cover_desc">拖动打开封面</string>
+    <string name="demo_cover_shutters_leaves_count">百叶窗叶子数:</string>
+    <string name="demo_cover_shutters_refreshable">实时刷新</string>
+    <string name="demo_main_group_cover_btns">显示封面:</string>
+    <string name="cover_shutters">百叶窗式封面</string>
+    <string name="cover_drawer">平移式封面</string>
+    <string name="cover_door">开门式封面</string>
+
+</resources>
