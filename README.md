@@ -1,9 +1,13 @@
 # SmartSwipe
----
 
 ![](https://img.shields.io/badge/aarSize-100KB-blue.svg)
 ![](https://img.shields.io/badge/minSDK-14-orange.svg)
 ![](https://img.shields.io/badge/license-Apache--2.0-blue.svg)
+
+
+library|smart-swipe|smart-swipe-support|smart-swipe-x
+:---:|:---:|:---:|:---:
+latest version| [![Download](https://api.bintray.com/packages/hellobilly/android/smart-swipe/images/download.svg)](https://bintray.com/hellobilly/android/smart-swipe/_latestVersion)| [![Download](https://api.bintray.com/packages/hellobilly/android/smart-swipe-x/images/download.svg)](https://bintray.com/hellobilly/android/smart-swipe-x/_latestVersion)| [![Download](https://api.bintray.com/packages/hellobilly/android/smart-swipe-support/images/download.svg)](https://bintray.com/hellobilly/android/smart-swipe-support/_latestVersion)
 
 
 
@@ -47,13 +51,37 @@ All Activities slide back in an easy way via a single line code.
 Back via release velocity<br/>[StayConsumer][StayConsumer]|Translucent Sliding Back<br/>[ActivitySlidingBackConsumer][ActivitySlidingBackConsumer]|Back with bezier<br/>[BezierBackConsumer][BezierBackConsumer]
 :---:|:---:|:---:
 <img width="200" src="images/stayConsumer.gif">|<img width="200" src="images/activitySlidingBackConsumer.gif">|<img width="200" src="images/bezierBackConsumer.gif">
-Like doors open<br/>[ActivityDoorBackConsumer][ActivityDoorBackConsumer]|Like shutters open<br/>[ActivityShuttersBackConsumer][ActivityShuttersBackConsumer]|<font color="blue">全局使用</font><br/>[SmartSwipeBack][SmartSwipeBack]
+Like doors open<br/>[ActivityDoorBackConsumer][ActivityDoorBackConsumer]|Like shutters open<br/>[ActivityShuttersBackConsumer][ActivityShuttersBackConsumer]|<font color="blue">Global Usage</font><br/>[SmartSwipeBack][SmartSwipeBack]
 <img width="200" src="images/activityDoorBackConsumer.gif">|<img width="200" src="images/activityShuttersBackConsumer.gif">|<img width="200" src="images/swipeBack.gif">
 
 
 ## Usage
 
-Most of 'SmartSwipe' can be used by chain programming in a single line code. The design style of API is as follows:
+First add `SmartSwipe` to your project
+
+```groovy
+compile 'com.billy.android:smart-swipe:latestVersion'
+```
+
+Nested scrolling only compatible after android api above 21(android 5.0) with core library(smart-swipe)
+
+Add extension library to compat for android support library or androidX like below:
+
+```groovy
+compile 'com.billy.android:smart-swipe:latestVersion'
+//compat for android support library
+compile 'com.billy.android:smart-swipe-support:latestVersion'
+```
+
+or
+
+```groovy
+compile 'com.billy.android:smart-swipe:latestVersion'
+//compat for android x
+compile 'com.billy.android:smart-swipe-x:latestVersion'
+```
+
+Most of `SmartSwipe` can be used by chain programming in a single line code. The design style of API is as follows:
 
 ```java
 SmartSwipe.wrap(...) 		//view or Activity
@@ -123,7 +151,7 @@ SmartSwipeRefresh.translateMode(view, false).setDataLoader(loader);
 
 ## Thanks
 
-- [SwipeBackHelper](https://github.com/Simon-Leeeeeeeee/SLWidget/blob/master/swipeback/src/main/java/cn/simonlee/widget/swipeback/SwipeBackHelper.java)
+- [Simon-Leeeeeeeee/SLWidget](https://github.com/Simon-Leeeeeeeee/SLWidget/blob/master/swipeback/src/main/java/cn/simonlee/widget/swipeback/SwipeBackHelper.java)
 - [ikew0ng/SwipeBackLayout](https://github.com/ikew0ng/SwipeBackLayout)
 - [Blankj/SwipePanel](https://github.com/Blankj/SwipePanel)
 - [qinci/AndroidSlideBack](https://github.com/qinci/AndroidSlideBack)
