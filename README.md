@@ -62,7 +62,7 @@ Like doors open<br/>[ActivityDoorBackConsumer][ActivityDoorBackConsumer]|Like sh
 First add `SmartSwipe` to your project
 
 ```groovy
-compile 'com.billy.android:smart-swipe:latestVersion'
+implementation 'com.billy.android:smart-swipe:latestVersion'
 ```
 
 Nested scrolling only compatible after android api above 21(android 5.0) with core library(smart-swipe)
@@ -70,17 +70,17 @@ Nested scrolling only compatible after android api above 21(android 5.0) with co
 Add extension library to compat for android support library or androidX like below:
 
 ```groovy
-compile 'com.billy.android:smart-swipe:latestVersion'
+implementation 'com.billy.android:smart-swipe:latestVersion'
 //compat for android support library
-compile 'com.billy.android:smart-swipe-support:latestVersion'
+implementation 'com.billy.android:smart-swipe-support:latestVersion'
 ```
 
 or
 
 ```groovy
-compile 'com.billy.android:smart-swipe:latestVersion'
+implementation 'com.billy.android:smart-swipe:latestVersion'
 //compat for android x
-compile 'com.billy.android:smart-swipe-x:latestVersion'
+implementation 'com.billy.android:smart-swipe-x:latestVersion'
 ```
 
 `SmartSwipe` can be used by chain programming within a single line code. The usage of API looks like follow:
