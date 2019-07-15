@@ -114,7 +114,7 @@ SmartSwipe.wrap(view)
 	;
 ```
 
-[Click here][SwipeConsumer]for more details about `SwipeConsumers`
+[Click here][SwipeConsumer] for more details about `SwipeConsumers`
 
 #### Activity slides back with a single line of code globally (5 styles are optional)
 
@@ -175,20 +175,20 @@ SmartSwipeRefresh.translateMode(view, false).setDataLoader(loader);
 
 
 [ViewDragHelper]: https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/customview/src/main/java/androidx/customview/widget/ViewDragHelper.java
-[SwipeConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SwipeConsumer.md
-[SmartSwipeBack]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SmartSwipeBack.md
-[SmartSwipeRefresh]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SmartSwipeRefresh.md
-[SwipeConsumerExclusiveGroup]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SwipeConsumerExclusiveGroup.md
+[SwipeConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SwipeConsumer.html
+[SmartSwipeBack]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SmartSwipeBack.html
+[SmartSwipeRefresh]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SmartSwipeRefresh.html
+[SwipeConsumerExclusiveGroup]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/SwipeConsumerExclusiveGroup.html
 
-[ActivityDoorBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivityDoorBackConsumer.md
-[ActivityShuttersBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivityShuttersBackConsumer.md
-[ActivitySlidingBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivitySlidingBackConsumer.md
-[BezierBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/BezierBackConsumer.md
-[DoorConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/DoorConsumer.md
-[DrawerConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/DrawerConsumer.md
-[ShuttersConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ShuttersConsumer.md
-[SlidingConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/SlidingConsumer.md
-[SpaceConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/SpaceConsumer.md
-[StayConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/StayConsumer.md
-[StretchConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/StretchConsumer.md
-[TranslucentSlidingConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/TranslucentSlidingConsumer.md
+[ActivityDoorBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivityDoorBackConsumer.html
+[ActivityShuttersBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivityShuttersBackConsumer.html
+[ActivitySlidingBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ActivitySlidingBackConsumer.html
+[BezierBackConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/BezierBackConsumer.html
+[DoorConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/DoorConsumer.html
+[DrawerConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/DrawerConsumer.html
+[ShuttersConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/ShuttersConsumer.html
+[SlidingConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/SlidingConsumer.html
+[SpaceConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/SpaceConsumer.html
+[StayConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/StayConsumer.html
+[StretchConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/StretchConsumer.html
+[TranslucentSlidingConsumer]: https://luckybilly.github.io/SmartSwipe-tutorial/pages/consumers/TranslucentSlidingConsumer.html
