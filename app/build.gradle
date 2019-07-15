@@ -44,7 +44,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
-    implementation project(':smart-swipe')
+//    implementation project(':smart-swipe')
+    implementation 'com.billy.android:smart-swipe:1.0.0'
 
     //switch to android support environment, should delete configs within projectRoot/gradle.properties as below:
     //  android.useAndroidX=true
@@ -55,5 +56,6 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation project(':smart-swipe-x')
+//    implementation project(':smart-swipe-x')
+    implementation 'com.billy.android:smart-swipe-x:1.0.0'
 }
