@@ -1,8 +1,8 @@
 # SmartSwipe
 
-![](https://img.shields.io/badge/aarSize-100KB-blue.svg)
-![](https://img.shields.io/badge/minSDK-14-orange.svg)
 ![](https://img.shields.io/badge/license-Apache--2.0-blue.svg)
+![](https://img.shields.io/badge/minSDK-14+-orange.svg)
+![](https://img.shields.io/badge/aarSize-100KB-blue.svg)
 
 
 library|smart-swipe|smart-swipe-support|smart-swipe-x
@@ -116,7 +116,7 @@ SmartSwipe.wrap(view)
 
 [Click here][SwipeConsumer] for more details about `SwipeConsumers`
 
-#### Activity slides back with a single line of code globally (5 styles are optional)
+#### Activity slides back with a single line of code globally
 
 ```java
 SmartSwipeBack.activityBezierBack(application, null);	//bezier shows while swiping

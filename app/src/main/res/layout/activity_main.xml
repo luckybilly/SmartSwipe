@@ -118,7 +118,7 @@
         >
             <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/demo_cover_shutters_leaves_count" android:textColor="@color/colorPrimaryDark" />
-                <TextView android:id="@+id/cover_shutters_leaves_count_number" android:layout_width="60dp" android:layout_height="wrap_content" android:textColor="@color/colorPrimary" android:gravity="center_horizontal"/>
+                <TextView android:id="@+id/cover_shutters_leaves_count_number" android:layout_width="60dp" android:layout_height="wrap_content" android:textColor="@color/colorAccent" android:gravity="center_horizontal" android:textSize="20sp"/>
                 <SeekBar android:id="@+id/cover_shutters_leaves_count_seek_bar" android:layout_width="match_parent" android:layout_height="20dp" android:max="20" />
             </LinearLayout>
             <CheckBox android:id="@+id/cover_shutters_refreshable"
