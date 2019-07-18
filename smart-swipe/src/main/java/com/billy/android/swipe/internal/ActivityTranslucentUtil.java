@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.Window;
 
@@ -64,7 +65,12 @@ public class ActivityTranslucentUtil {
         }
     };
     private long convertTranslucentTimeStamp;
+
     public void convertActivityToTranslucent() {
+        convertActivityToTranslucent(true);
+    }
+
+    public void convertActivityToTranslucent(final boolean retry) {
         if (mIsTranslucent || mActivity == null) {
             return;
         }
@@ -72,7 +78,7 @@ public class ActivityTranslucentUtil {
             Looper.myQueue().addIdleHandler(convertActivityToTranslucentIdleHandler);
             return;
         }
-        convertTranslucentTimeStamp = System.currentTimeMillis();
+        convertTranslucentTimeStamp = SystemClock.elapsedRealtime();
         final long callbackTimeStamp = convertTranslucentTimeStamp;
         convertActivityToTranslucent(mActivity, new ActivityTranslucentUtil.TranslucentCallback() {
             @Override
@@ -85,7 +91,7 @@ public class ActivityTranslucentUtil {
     }
 
     public void convertActivityFromTranslucent() {
-        convertTranslucentTimeStamp = System.currentTimeMillis();
+        convertTranslucentTimeStamp = SystemClock.elapsedRealtime();
         convertActivityFromTranslucent(mActivity);
         setTranslucent(false);
     }
