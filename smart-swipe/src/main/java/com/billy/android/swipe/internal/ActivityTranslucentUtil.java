@@ -84,7 +84,11 @@ public class ActivityTranslucentUtil {
             @Override
             public void onTranslucentCallback(boolean translucent) {
                 if (callbackTimeStamp == convertTranslucentTimeStamp) {
-                    setTranslucent(translucent);
+                    if (retry && !translucent) {
+                        convertActivityToTranslucent(false);
+                    } else {
+                        setTranslucent(translucent);
+                    }
                 }
             }
         });
