@@ -30,6 +30,16 @@ public class SmartSwipe {
             return wrapper;
         }
         View decorView = activity.getWindow().getDecorView();
+        if (decorView instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) decorView;
+            int childCount = group.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = group.getChildAt(i);
+                if (child.findViewById(android.R.id.content) != null) {
+                    return wrap(child);
+                }
+            }
+        }
         View contentView = decorView.findViewById(android.R.id.content);
         return wrap(contentView);
     }
