@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -352,9 +353,9 @@ public class FallingView extends View {
          */
         private void moveY(){
             if (lastDrawTime != 0) {
-                presentY += (System.currentTimeMillis() - lastDrawTime) * presentSpeed / 1000;
+                presentY += (SystemClock.elapsedRealtime() - lastDrawTime) * presentSpeed / 1000;
             }
-            lastDrawTime = System.currentTimeMillis();
+            lastDrawTime = SystemClock.elapsedRealtime();
         }
 
         /**

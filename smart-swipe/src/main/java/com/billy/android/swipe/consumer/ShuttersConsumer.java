@@ -5,6 +5,8 @@ import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.view.View;
 import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.SwipeConsumer;
@@ -128,9 +130,7 @@ public class ShuttersConsumer extends SwipeConsumer {
                     srcView.draw(canvas);
                     array[index] = screenshot;
                 } catch(Exception e) {
-                    //if cause exception: ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
-                    // switch to main thread
-                    if (e.getClass().getName().equals("android.view.ViewRootImpl$CalledFromWrongThreadException")) {
+                    if (Looper.myLooper() != Looper.getMainLooper()) {
                         switchToMainThread = true;
                         srcView.post(this);
                     }
@@ -148,7 +148,7 @@ public class ShuttersConsumer extends SwipeConsumer {
     private long lastRefreshTime;
     protected void refreshBitmap() {
         if (lastRefreshTime == 0) {
-            lastRefreshTime = System.currentTimeMillis();
+            lastRefreshTime = SystemClock.elapsedRealtime();
         }
         View v = mWrapper.getContentView();
         final int leavesCount = this.mLeavesCount;
@@ -187,11 +187,20 @@ public class ShuttersConsumer extends SwipeConsumer {
         if (!mRefreshing) {
             return;
         }
-        this.mScreenshots = array;
+        boolean hasNull = false;
+        for (Bitmap bitmap : array) {
+            if (bitmap == null) {
+                hasNull = true;
+                break;
+            }
+        }
+        if (!hasNull) {
+            this.mScreenshots = array;
+        }
         v.post(refreshWrapperRunnable);
         if (mRefreshable) {
-            long timePass = System.currentTimeMillis() - lastRefreshTime;
-            lastRefreshTime = System.currentTimeMillis();
+            long timePass = SystemClock.elapsedRealtime() - lastRefreshTime;
+            lastRefreshTime = SystemClock.elapsedRealtime();
             if (timePass < refreshDelay) {
                 v.postDelayed(new Runnable() {
                     @Override

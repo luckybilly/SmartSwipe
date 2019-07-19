@@ -13,25 +13,16 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //add swipe translucent back performance for all activities
-        // (default direction: left, previous activity related factor:0.5F)
-//        SmartSwipeBack.activitySlidingBack(this, activitySwipeBackFilter);
 
-        //add swipe back like mobile QQ (activity keep stay and finish activity with release velocity)
-        //SmartSwipeBack.activityStayBack(this, activitySwipeBackFilter);
-
-        //add bezier swipe back like XiaoMi (swipe with bezier back consumer at edge of screen)
-        //SmartSwipeBack.activityBezierBack(this, activitySwipeBackFilter);
-
-        //add swipe back looks like open a door
-        //SmartSwipeBack.activityDoorBack(this, activitySwipeBackFilter);
+        //add global swipe back for all activities
+        // for more details: https://qibilly.com/SmartSwipe-tutorial/pages/SmartSwipeBack.html
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //use bezier back before LOLLIPOP
             SmartSwipeBack.activityBezierBack(this, activitySwipeBackFilter);
         } else {
-            //add swipe back looks like open shutters
-            SmartSwipeBack.activityShuttersBack(this, activitySwipeBackFilter);
+            //add relative moving slide back
+            SmartSwipeBack.activitySlidingBack(this, activitySwipeBackFilter);
         }
     }
 

@@ -26,7 +26,7 @@ public class CoverManager {
     private SwipeConsumer translucentSlidingConsumer;
 
     public boolean isOpened() {
-        return consumer != null && consumer.isOpened();
+        return consumer == null || consumer.isOpened();
     }
 
     public CoverManager open() {

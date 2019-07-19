@@ -53,6 +53,7 @@ public class ActivitySlidingBackConsumer extends TranslucentSlidingConsumer {
     public void onDetachFromWrapper() {
         super.onDetachFromWrapper();
         mActivityTranslucentUtil.convertActivityFromTranslucent();
+        resetPreviousActivityContentView();
     }
 
     @Override
@@ -64,11 +65,16 @@ public class ActivitySlidingBackConsumer extends TranslucentSlidingConsumer {
                 mActivity.overridePendingTransition(R.anim.anim_none, R.anim.anim_none);
             }
         }
+        resetPreviousActivityContentView();
     }
 
     @Override
     protected void onClosed() {
         super.onClosed();
+        resetPreviousActivityContentView();
+    }
+
+    private void resetPreviousActivityContentView() {
         if (mPreviousActivityContentView != null) {
             mPreviousActivityContentView.setTranslationX(0);
             mPreviousActivityContentView.setTranslationY(0);
