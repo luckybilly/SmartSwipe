@@ -174,10 +174,13 @@ public class SmartSwipeWrapper extends ViewGroup {
         if (childCount > 0 && mContentView == null) {
             for (int i = 0; i < childCount; i++) {
                 View child = getChildAt(i);
-                final int gravity = ((LayoutParams) child.getLayoutParams()).gravity;
-                if (gravity == LayoutParams.UNSPECIFIED_GRAVITY) {
-                    setContentView(child);
-                    break;
+                ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
+                if (layoutParams instanceof LayoutParams) {
+                    final int gravity = ((LayoutParams) layoutParams).gravity;
+                    if (gravity == LayoutParams.UNSPECIFIED_GRAVITY) {
+                        setContentView(child);
+                        break;
+                    }
                 }
             }
         }
@@ -343,10 +346,6 @@ public class SmartSwipeWrapper extends ViewGroup {
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new LayoutParams(getContext(), attrs);
-    }
-    @Override
-    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-        return p instanceof LayoutParams;
     }
 
     @Override

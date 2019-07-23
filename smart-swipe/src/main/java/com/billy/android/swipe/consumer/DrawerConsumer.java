@@ -58,7 +58,7 @@ public class DrawerConsumer extends SwipeConsumer implements OnClickListener {
         View contentView = wrapper.getContentView();
         for (int i = 0; i < childCount; i++) {
             View child = wrapper.getChildAt(i);
-            if (child == contentView) {
+            if (child == contentView || !(child.getLayoutParams() instanceof SmartSwipeWrapper.LayoutParams)) {
                 continue;
             }
             final int gravity = ((SmartSwipeWrapper.LayoutParams) child.getLayoutParams()).gravity;
