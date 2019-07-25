@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ArrowHeader">
+        <attr name="bowColor" format="color" />
+        <attr name="arrowColor" format="color" />
+        <attr name="stringColor" format="color" />
+        <attr name="lineColor" format="color" />
+        <attr name="bowLength" format="dimension" />
+    </declare-styleable>
+</resources>

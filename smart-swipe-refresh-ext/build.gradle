@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minVersion
+        targetSdkVersion rootProject.targetVersion
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compileOnly project(':smart-swipe')
+    // change to compile when running:  ./gradlew smart-swipe-refresh-ext:bintrayUpload
+    implementation 'com.wuyr:arrowdrawable:1.0.1'
+}
+
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'smart-swipe-refresh-ext'
+
+    publishedGroupId = 'com.billy.android'
+    libraryName = 'SmartSwipe'
+    artifact = 'smart-swipe-refresh-ext'
+
+    libraryDescription = 'Customer swipe refresh views'
+
+    siteUrl = 'https://github.com/luckybilly/SmartSwipe'
+    gitUrl = 'https://github.com/luckybilly/SmartSwipe.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'billy'
+    developerName = 'billy'
+    developerEmail = 'okkanan@hotmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: rootProject.file('bintray.gradle')

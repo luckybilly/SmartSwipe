@@ -1,1 +1,1 @@
-include ':app', ':smart-swipe', ':smart-swipe-x', ':smart-swipe-support'
+include ':app', ':smart-swipe', ':smart-swipe-x', ':smart-swipe-support', ':smart-swipe-refresh-ext'
