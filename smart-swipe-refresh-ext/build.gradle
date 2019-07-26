@@ -20,22 +20,25 @@ android {
 }
 
 dependencies {
+    compileOnly project(':smart-swipe')
+    // change to compile when running:  ./gradlew smart-swipe-refresh-ext:bintrayUpload
+    implementation 'com.wuyr:arrowdrawable:1.0.1'
 }
 
 ext {
     bintrayRepo = 'android'
-    bintrayName = 'smart-swipe'
+    bintrayName = 'smart-swipe-refresh-ext'
 
     publishedGroupId = 'com.billy.android'
     libraryName = 'SmartSwipe'
-    artifact = 'smart-swipe'
+    artifact = 'smart-swipe-refresh-ext'
 
-    libraryDescription = 'Make swipe easier for Android View and Activity'
+    libraryDescription = 'Customer swipe refresh views'
 
     siteUrl = 'https://github.com/luckybilly/SmartSwipe'
     gitUrl = 'https://github.com/luckybilly/SmartSwipe.git'
 
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.0'
 
     developerId = 'billy'
     developerName = 'billy'

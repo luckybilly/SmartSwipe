@@ -243,10 +243,10 @@ public class SmartSwipeRefresh {
         @Override
         public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
             consumer.unlockAllDirections();
-//            if (mActiveRefreshView == mFooter) {
-//                mFooter.setNoMoreData(mNoMoreData);
-//            }
-            mActiveRefreshView = null;
+            if (mActiveRefreshView != null) {
+                mActiveRefreshView.onReset();
+                mActiveRefreshView = null;
+            }
         }
 
         @Override
@@ -435,6 +435,12 @@ public class SmartSwipeRefresh {
          * @return time delay for finish animation plays before header or footer close
          */
         long onFinish(boolean success);
+
+        /**
+         * Called when SwipeConsumer closed
+         * @since v1.0.3
+         */
+        void onReset();
 
         /**
          * Called when header or footer fully swiped and animate rebound to the fully distance

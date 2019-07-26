@@ -138,6 +138,15 @@ SmartSwipeRefresh.behindMode(view, false).setDataLoader(loader);
 SmartSwipeRefresh.scaleMode(view, false).setDataLoader(loader);
 SmartSwipeRefresh.translateMode(view, false).setDataLoader(loader);
 ```
+
+You can use default headers and footers, and you can also customize your own. 
+
+The refresh extension library(`smart-swipe-refresh-ext`: [![Download](https://api.bintray.com/packages/hellobilly/android/smart-swipe-refresh-ext/images/download.svg)](https://bintray.com/hellobilly/android/smart-swipe-refresh-ext/_latestVersion)) will include some fancy third-party headers and footers.
+
+here is the first one(Based on [Ifxcyr/ArrowDrawable](https://github.com/Ifxcyr/ArrowDrawable)):
+
+![refresh arrow](images/refresh_arrow.gif)
+
 [Click here][SmartSwipeRefresh] For more Details
 
 ## `SmartSwipe` features：
@@ -163,7 +172,7 @@ SmartSwipeRefresh.translateMode(view, false).setDataLoader(loader);
 - https://m.sc.enterdesk.com/sucai/477026.html
 - [AnliaLee/FallingView](https://github.com/AnliaLee/FallingView)
 - [jd-alexander/LikeButton](https://github.com/jd-alexander/LikeButton)
-
+- [Ifxcyr/ArrowDrawable](https://github.com/Ifxcyr/ArrowDrawable)
 
 
 

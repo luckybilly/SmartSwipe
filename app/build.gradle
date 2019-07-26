@@ -8,8 +8,8 @@ android {
         minSdkVersion rootProject.minVersion
         targetSdkVersion rootProject.targetVersion
         applicationId "com.billy.android.swipe.demo"
-        versionCode 1
-        versionName "1.0"
+        versionCode 10003
+        versionName "1.0.3"
     }
 
     signingConfigs {
@@ -44,8 +44,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
+//    implementation project(':smart-swipe-refresh-ext')
 //    implementation project(':smart-swipe')
-    implementation 'com.billy.android:smart-swipe:1.0.2'
+    implementation 'com.billy.android:smart-swipe:1.0.3'
+    implementation 'com.billy.android:smart-swipe-refresh-ext:1.0.0'
 
     //switch to android support environment, should delete configs within projectRoot/gradle.properties as below:
     //  android.useAndroidX=true

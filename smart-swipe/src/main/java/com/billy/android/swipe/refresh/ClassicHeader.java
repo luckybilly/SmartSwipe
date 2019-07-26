@@ -126,6 +126,11 @@ public class ClassicHeader extends RelativeLayout implements SmartSwipeRefresh.S
     }
 
     @Override
+    public void onReset() {
+
+    }
+
+    @Override
     public void onDataLoading() {
         showAnimation();
         setText(R.string.ssr_footer_refreshing);
