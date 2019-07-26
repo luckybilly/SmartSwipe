@@ -8,8 +8,8 @@ android {
         minSdkVersion rootProject.minVersion
         targetSdkVersion rootProject.targetVersion
         applicationId "com.billy.android.swipe.demo"
-        versionCode 1
-        versionName "1.0"
+        versionCode 10003
+        versionName "1.0.3"
     }
 
     signingConfigs {
