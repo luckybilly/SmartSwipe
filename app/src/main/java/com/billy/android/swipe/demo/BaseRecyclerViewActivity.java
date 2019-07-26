@@ -57,7 +57,7 @@ public abstract class BaseRecyclerViewActivity extends BaseActivity {
                     adapter.refreshData(getData());
                     ssr.finished(true);
                 }
-            }, 500);
+            }, 2000);
         }
 
         @Override
