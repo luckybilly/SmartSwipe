@@ -13,6 +13,8 @@ import android.os.MessageQueue;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.Window;
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
@@ -54,6 +56,10 @@ public class ActivityTranslucentUtil {
             Window window = activity.getWindow();
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             window.getDecorView().setBackgroundDrawable(null);
+            SmartSwipeWrapper wrapper = SmartSwipe.peekWrapperFor(activity);
+            if (wrapper != null) {
+                wrapper.setBackgroundColor(Color.TRANSPARENT);
+            }
         }
     }
 
