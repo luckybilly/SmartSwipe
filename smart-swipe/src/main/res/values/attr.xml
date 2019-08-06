@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SmartSwipeWrapper_Layout">
-        <attr name="layout_gravity">
+        <attr name="swipe_gravity">
             <flag name="left"   value="0x1" />
             <flag name="right"  value="0x2" />
             <flag name="top"    value="0x4" />

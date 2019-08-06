@@ -5,6 +5,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                tools:ignore="MissingPrefix"
 >
     <include android:id="@+id/title" layout="@layout/layout_title" />
     <ScrollView android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:layout_height="100dp"
                     android:background="@drawable/menu_item_bg"
             >
-                <LinearLayout app:layout_gravity="right|left" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent">
+                <LinearLayout app:swipe_gravity="right|left" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent">
                     <com.like.LikeButton
                             app:icon_type="heart"
                             app:icon_size="25dp"
@@ -62,13 +63,13 @@
                 <com.like.LikeButton
                         app:icon_type="heart"
                         app:icon_size="25dp"
-                        app:layout_gravity="top"
+                        app:swipe_gravity="top"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" android:background="#15BABA"/>
                 <com.like.LikeButton
                         app:icon_type="Thumb"
                         app:icon_size="25dp"
-                        app:layout_gravity="bottom"
+                        app:swipe_gravity="bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" android:background="#CBECCC"/>
             </com.billy.android.swipe.SmartSwipeWrapper>
