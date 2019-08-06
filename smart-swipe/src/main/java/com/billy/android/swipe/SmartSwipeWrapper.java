@@ -375,7 +375,7 @@ public class SmartSwipeWrapper extends ViewGroup {
             super(c, attrs);
 
             final TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.SmartSwipeWrapper_Layout);
-            gravity = a.getInt(R.styleable.SmartSwipeWrapper_Layout_layout_gravity, UNSPECIFIED_GRAVITY);
+            gravity = a.getInt(R.styleable.SmartSwipeWrapper_Layout_swipe_gravity, UNSPECIFIED_GRAVITY);
             a.recycle();
         }
 
