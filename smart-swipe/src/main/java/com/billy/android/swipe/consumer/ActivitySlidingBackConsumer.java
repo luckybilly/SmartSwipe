@@ -71,6 +71,7 @@ public class ActivitySlidingBackConsumer extends TranslucentSlidingConsumer {
     @Override
     protected void onClosed() {
         super.onClosed();
+        mActivityTranslucentUtil.convertActivityFromTranslucent();
         resetPreviousActivityContentView();
     }
 
