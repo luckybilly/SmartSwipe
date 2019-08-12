@@ -57,6 +57,12 @@ public class ActivityShuttersBackConsumer extends ShuttersConsumer {
     }
 
     @Override
+    protected void onClosed() {
+        super.onClosed();
+        mActivityTranslucentUtil.convertActivityFromTranslucent();
+    }
+
+    @Override
     public int clampDistanceVertical(int distanceY, int dy) {
         //resolve smooth problem while convert to transparent
         if (mActivityTranslucentUtil.isTranslucent()) {
