@@ -819,6 +819,9 @@ public class SwipeHelper {
                             // This one's going away, skip.
                             continue;
                         }
+                        if (!isValidPointerForActionMove(id)) {
+                            continue;
+                        }
 
                         if (trySwipe(id, true, mInitialMotionX[id], mInitialMotionX[id], 0, 0)) {
                             newActivePointer = mActivePointerId;
