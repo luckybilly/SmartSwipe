@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.billy.android.swipe.internal.SwipeHelper;
 import com.billy.android.swipe.internal.ViewCompat;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -115,10 +116,15 @@ public class SmartSwipeWrapper extends ViewGroup {
         }
     }
 
+    private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
         int count = getChildCount();
+        final boolean measureMatchParentChildren =
+                MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
+                        MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
+        mMatchParentChildren.clear();
 
         int maxHeight = 0;
         int maxWidth = 0;
@@ -126,10 +132,19 @@ public class SmartSwipeWrapper extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
-            measureChild(child, widthMeasureSpec, heightMeasureSpec);
+            final ViewGroup.LayoutParams lp = child.getLayoutParams();
+            final int childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, lp.width);
+            final int childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, lp.height);
+            child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
             maxWidth = Math.max(maxWidth, child.getMeasuredWidth());
             maxHeight = Math.max(maxHeight, child.getMeasuredHeight());
             childState = combineMeasuredStates(childState, child.getMeasuredState());
+            if (measureMatchParentChildren) {
+                if (lp.width == LayoutParams.MATCH_PARENT ||
+                        lp.height == LayoutParams.MATCH_PARENT) {
+                    mMatchParentChildren.add(child);
+                }
+            }
         }
 
         // Check against our minimum height and width
@@ -137,8 +152,34 @@ public class SmartSwipeWrapper extends ViewGroup {
         maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
 
         setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
-                resolveSizeAndState(maxHeight, heightMeasureSpec, childState << MEASURED_HEIGHT_STATE_SHIFT));
+                resolveSizeAndState(maxHeight, heightMeasureSpec,
+                        childState << MEASURED_HEIGHT_STATE_SHIFT));
 
+        count = mMatchParentChildren.size();
+        if (count > 1) {
+            for (int i = 0; i < count; i++) {
+                final View child = mMatchParentChildren.get(i);
+                final ViewGroup.LayoutParams lp = child.getLayoutParams();
+
+                final int childWidthMeasureSpec;
+                if (lp.width == LayoutParams.MATCH_PARENT) {
+                    final int width = Math.max(0, getMeasuredWidth());
+                    childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+                } else {
+                    childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, lp.width);
+                }
+
+                final int childHeightMeasureSpec;
+                if (lp.height == LayoutParams.MATCH_PARENT) {
+                    final int height = Math.max(0, getMeasuredHeight());
+                    childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+                } else {
+                    childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, lp.height);
+                }
+
+                child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+            }
+        }
         for (SwipeConsumer consumer : mConsumers) {
             if (consumer != null) {
                 consumer.onMeasure(widthMeasureSpec, heightMeasureSpec);
