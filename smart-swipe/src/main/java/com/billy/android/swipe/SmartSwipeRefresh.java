@@ -290,6 +290,7 @@ public class SmartSwipeRefresh {
     }
 
     private void openDirection(final int direction) {
+        mConsumer.lockAllDirections();
         mConsumer.getWrapper().post(new Runnable() {
             @Override
             public void run() {
