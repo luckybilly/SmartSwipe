@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.*;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.billy.android.swipe.*;
@@ -43,7 +42,7 @@ public class SlidingConsumerActivity extends BaseRecyclerViewActivity {
         textView.setTextColor(0xFFFFFFFF);
         textView.setTextSize(14);
         textView.setGravity(Gravity.CENTER);
-        textView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT));
+//        textView.setLayoutParams(new SmartSwipeWrapper.LayoutParams(SmartSwipeWrapper.LayoutParams.WRAP_CONTENT, SmartSwipeWrapper.LayoutParams.MATCH_PARENT));
         SwipeConsumer consumer = SmartSwipe.wrap(view)
                 .addConsumer(new SlidingConsumer())
                 .setHorizontalDrawerView(textView)

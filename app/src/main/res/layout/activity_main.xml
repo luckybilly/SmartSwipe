@@ -38,7 +38,7 @@
             <com.billy.android.swipe.SmartSwipeWrapper
                     android:id="@+id/main_ui_wrap_view"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/menu_item_bg"
             >
                 <LinearLayout app:swipe_gravity="right|left" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent">
