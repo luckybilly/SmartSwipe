@@ -35,7 +35,7 @@ ext {
     siteUrl = 'https://github.com/luckybilly/SmartSwipe'
     gitUrl = 'https://github.com/luckybilly/SmartSwipe.git'
 
-    libraryVersion = '1.0.6'
+    libraryVersion = '1.0.7'
 
     developerId = 'billy'
     developerName = 'billy'
