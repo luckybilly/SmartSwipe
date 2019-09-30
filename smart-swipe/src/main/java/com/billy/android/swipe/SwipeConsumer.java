@@ -609,7 +609,10 @@ public abstract class SwipeConsumer {
             final View child = parentView.getChildAt(i);
             if (x >= child.getLeft() && x < child.getRight()
                     && y >= child.getTop() && y < child.getBottom()
-                    && child.getVisibility() == View.VISIBLE && !(child instanceof ScrimView)) {
+                    && child.getVisibility() == View.VISIBLE) {
+                if (child instanceof ScrimView && !child.isFocusable() && !child.isClickable()) {
+                    continue;
+                }
                 return child;
             }
         }

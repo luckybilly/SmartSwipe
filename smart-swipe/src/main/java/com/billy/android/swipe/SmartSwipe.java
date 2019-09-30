@@ -92,8 +92,9 @@ public class SmartSwipe {
         if (view.getParent() != null) {
             ViewGroup viewParent = (ViewGroup) view.getParent();
             wrapper = createNewWrapper(view.getContext());
+            int index = viewParent.indexOfChild(view);
             viewParent.removeView(view);
-            viewParent.addView(wrapper, layoutParams);
+            viewParent.addView(wrapper, index, layoutParams);
         } else {
             wrapper = createNewWrapper(view.getContext());
             wrapper.setLayoutParams(layoutParams);
