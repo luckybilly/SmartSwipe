@@ -47,7 +47,7 @@ dependencies {
 
 //    implementation project(':smart-swipe-refresh-ext')
 //    implementation project(':smart-swipe')
-    implementation 'com.billy.android:smart-swipe:1.0.7'
+    implementation 'com.billy.android:smart-swipe:1.0.8'
     implementation 'com.billy.android:smart-swipe-refresh-ext:1.0.0'
 
     //switch to android support environment, should delete configs within projectRoot/gradle.properties as below:
