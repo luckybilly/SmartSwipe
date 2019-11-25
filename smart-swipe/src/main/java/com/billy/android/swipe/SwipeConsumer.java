@@ -9,6 +9,7 @@ import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.AbsSeekBar;
+
 import com.billy.android.swipe.calculator.ScaledCalculator;
 import com.billy.android.swipe.calculator.SwipeDistanceCalculator;
 import com.billy.android.swipe.consumer.DrawerConsumer;
@@ -134,23 +135,33 @@ public abstract class SwipeConsumer {
     }
 
     public boolean tryAcceptMoving(int pointerId, float downX, float downY, float dx, float dy) {
+        int dir = calSwipeDirection(pointerId, downX, downY, dx, dy);
+        boolean handle = dir != DIRECTION_NONE;
+        if (handle) {
+            mDirection = dir;
+        }
+        return handle;
+    }
+    
+    public int calSwipeDirection(int pointerId, float downX, float downY, float dx, float dy) {
         if (isNestedAndDisabled(pointerId)) {
-            return false;
+            return DIRECTION_NONE;
         }
         float absX = Math.abs(dx);
         float absY = Math.abs(dy);
         if ((mCurSwipeDistanceX != 0 || mCurSwipeDistanceY != 0)) {
             if (dx == 0 && dy == 0) {
-                return false;
+                return DIRECTION_NONE;
             }
             //already swiped, checkout whether the swipe direction as same as last one
             if ((mDirection & DIRECTION_HORIZONTAL) > 0 && absX > absY || (mDirection & DIRECTION_VERTICAL) > 0 && absX < absY) {
                 if (!isDirectionLocked(mDirection)) {
                     //it seams like it wants to continue current swiping, now, check whether any child can scroll
-                    return !canChildScroll(mWrapper, mDirection, (int) downX, (int) downY, dx, dy);
+                    boolean canChildScroll = canChildScroll(mWrapper, mDirection, pointerId, downX, downY, dx, dy);
+                    return canChildScroll ? DIRECTION_NONE : mDirection;
                 }
             }
-            return false;
+            return DIRECTION_NONE;
         }
         int dir = DIRECTION_NONE;
         boolean handle = false;
@@ -201,18 +212,14 @@ public abstract class SwipeConsumer {
                 } else {
                     //no edge size set, check any child can scroll on this direction
                     // (absolutely, also check whether child Wrapper can consume this swipe motion event)
-                    handle = !canChildScroll(mWrapper, dir, (int) downX, (int) downY, dx, dy);
+                    handle = !canChildScroll(mWrapper, dir, pointerId, downX, downY, dx, dy);
                 }
             }
         }
-        if (handle) {
-            if (isDirectionLocked(dir)) {
-                handle = false;
-            } else {
-                mDirection = dir;
-            }
+        if (handle && (!isDirectionLocked(dir)) || (!mDisableNestedFly && pointerId == SwipeHelper.POINTER_NESTED_FLY)) {
+            return dir;
         }
-        return handle;
+        return DIRECTION_NONE;
     }
 
     protected boolean isNestedAndDisabled(int pointerId) {
@@ -220,10 +227,26 @@ public abstract class SwipeConsumer {
                 || mDisableNestedFly && pointerId == SwipeHelper.POINTER_NESTED_FLY;
     }
 
-    private boolean canChildScroll(ViewGroup parentView, int direction, int downX, int downY, float dx, float dy) {
+    protected boolean canChildScroll(ViewGroup parentView, int direction, int pointerId, float downX, float downY, float dx, float dy) {
         boolean canScroll = false;
-        View topChild = findTopChildUnder(parentView, downX, downY);
-        if (topChild != null) {
+        View topChild = findTopChildUnder(parentView, (int)downX, (int)downY);
+        if (topChild instanceof SmartSwipeWrapper) {
+            SmartSwipeWrapper wrapper = (SmartSwipeWrapper) topChild;
+            SwipeHelper swipeHelper = wrapper.mHelper;
+            SwipeConsumer consumer;
+            if (swipeHelper != null && (consumer = swipeHelper.getSwipeConsumer()) != null ) {
+                int dir = consumer.calSwipeDirection(pointerId, downX, downY, dx, dy);
+                canScroll = dir != DIRECTION_NONE && consumer.getProgress() < 1;
+            } else {
+                List<SwipeConsumer> allConsumers = wrapper.getAllConsumers();
+                for (SwipeConsumer sc : allConsumers) {
+                    if (sc != null && sc.calSwipeDirection(pointerId, downX, downY, dx, dy) != DIRECTION_NONE) {
+                        canScroll = true;
+                        break;
+                    }
+                }
+            }
+        } else if (topChild != null) {
             switch (direction) {
                 case DIRECTION_LEFT:
                 case DIRECTION_RIGHT:
@@ -251,9 +274,9 @@ public abstract class SwipeConsumer {
                     break;
                 default:
             }
-            if (!canScroll && topChild instanceof ViewGroup) {
-                return canChildScroll((ViewGroup) topChild, direction, downX - topChild.getLeft(), downY - topChild.getTop(), dx, dy);
-            }
+        }
+        if (!canScroll && topChild instanceof ViewGroup) {
+            return canChildScroll((ViewGroup) topChild, direction, pointerId, downX - topChild.getLeft(), downY - topChild.getTop(), dx, dy);
         }
         return canScroll;
     }

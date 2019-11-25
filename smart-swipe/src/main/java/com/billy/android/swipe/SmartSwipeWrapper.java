@@ -9,10 +9,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.billy.android.swipe.internal.SwipeHelper;
 import com.billy.android.swipe.internal.ViewCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class SmartSwipeWrapper extends ViewGroup {
     protected final List<SwipeHelper> mHelpers = new LinkedList<>();
     protected final List<SwipeConsumer> mConsumers = new LinkedList<>();
     protected boolean mInflateFromXml;
+    protected boolean mNestedInProgress;
+    protected boolean mIsNestedScrollingEnabled = true;
 
     public SmartSwipeWrapper(Context context) {
         this(context, null, 0);
@@ -50,7 +54,7 @@ public class SmartSwipeWrapper extends ViewGroup {
         init();
     }
 
-    private void init() {
+    protected void init() {
     }
 
     @Override
@@ -63,13 +67,15 @@ public class SmartSwipeWrapper extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mHelper != null) {
-            return mHelper.shouldInterceptTouchEvent(ev);
-        } else {
-            for (SwipeHelper helper : mHelpers) {
-                if (helper.shouldInterceptTouchEvent(ev)) {
-                    mHelper = helper;
-                    return true;
+        if (!mNestedInProgress) {
+            if (mHelper != null) {
+                return mHelper.shouldInterceptTouchEvent(ev);
+            } else {
+                for (SwipeHelper helper : mHelpers) {
+                    if (helper.shouldInterceptTouchEvent(ev)) {
+                        mHelper = helper;
+                        return true;
+                    }
                 }
             }
         }
@@ -78,18 +84,22 @@ public class SmartSwipeWrapper extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mHelper != null) {
-            mHelper.processTouchEvent(event);
-        } else {
-            for (SwipeHelper helper : mHelpers) {
-                helper.processTouchEvent(event);
-                if (helper.getDragState() == SwipeHelper.STATE_DRAGGING) {
-                    mHelper = helper;
-                    return true;
+        if (!mNestedInProgress) {
+            if (mHelper != null) {
+                mHelper.processTouchEvent(event);
+            } else {
+                for (SwipeHelper helper : mHelpers) {
+                    helper.processTouchEvent(event);
+                    if (helper.getDragState() == SwipeHelper.STATE_DRAGGING) {
+                        mHelper = helper;
+                        return true;
+                    }
                 }
             }
+            return true;
+        } else {
+            return super.onTouchEvent(event);
         }
-        return true;
     }
 
     @Override
@@ -240,42 +250,6 @@ public class SmartSwipeWrapper extends ViewGroup {
                 ViewCompat.postInvalidateOnAnimation(this);
             }
         }
-    }
-
-    @Override
-    public boolean canScrollVertically(int direction) {
-        for (SwipeConsumer consumer : mConsumers) {
-            if (direction < 0 && consumer.isTopEnable() && !consumer.isTopLocked()) {
-                if (consumer.getDirection() == DIRECTION_TOP && consumer.getProgress() >= 1) {
-                    return false;
-                }
-                return true;
-            } else if (direction > 0 && consumer.isBottomEnable() && !consumer.isBottomLocked()) {
-                if (consumer.getDirection() == DIRECTION_BOTTOM && consumer.getProgress() >= 1) {
-                    return false;
-                }
-                return true;
-            }
-        }
-        return super.canScrollVertically(direction);
-    }
-
-    @Override
-    public boolean canScrollHorizontally(int direction) {
-        for (SwipeConsumer consumer : mConsumers) {
-            if (direction < 0 && consumer.isLeftEnable() && !consumer.isLeftLocked()) {
-                if (consumer.getDirection() == DIRECTION_LEFT && consumer.getProgress() >= 1) {
-                    return false;
-                }
-                return true;
-            } else if (direction > 0 && consumer.isRightEnable() && !consumer.isRightLocked()) {
-                if (consumer.getDirection() == DIRECTION_RIGHT && consumer.getProgress() >= 1) {
-                    return false;
-                }
-                return true;
-            }
-        }
-        return super.canScrollHorizontally(direction);
     }
 
     public <T extends SwipeConsumer> T addConsumer(T consumer) {
@@ -462,6 +436,28 @@ public class SmartSwipeWrapper extends ViewGroup {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        setNestedScrollingEnabled(mIsNestedScrollingEnabled);
+    }
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled) {
+        mIsNestedScrollingEnabled = enabled;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            super.setNestedScrollingEnabled(enabled);
+        }
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.isNestedScrollingEnabled();
+        }
+        return false;
+    }
+
+    @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
         return onStartNestedScroll(child, target, nestedScrollAxes, ViewCompat.TYPE_TOUCH);
     }
@@ -493,17 +489,22 @@ public class SmartSwipeWrapper extends ViewGroup {
     /////////////////////////////////////////
 
     public boolean onStartNestedScroll(View child, View target, int axes, int type) {
-        if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0) {
-            for (SwipeConsumer consumer : mConsumers) {
-                if (consumer.isTopEnable() || consumer.isBottomEnable()) {
-                    return true;
-                }
+        boolean vertical = (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+        boolean horizontal = (axes & ViewCompat.SCROLL_AXIS_HORIZONTAL) != 0;
+        for (SwipeConsumer consumer : mConsumers) {
+            int direction = consumer.getDirection();
+            boolean handle;
+            if (direction != DIRECTION_NONE) {
+                //only handle the same axes as current swipe direction
+                handle = horizontal && (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT);
+                handle = handle || vertical && (direction == DIRECTION_TOP || direction == DIRECTION_BOTTOM);
+            } else {
+                handle = horizontal && (consumer.isLeftEnable() || consumer.isRightEnable());
+                handle = handle || vertical && (consumer.isTopEnable() || consumer.isBottomEnable());
             }
-        } else if ((axes & ViewCompat.SCROLL_AXIS_HORIZONTAL) != 0) {
-            for (SwipeConsumer consumer : mConsumers) {
-                if (consumer.isLeftEnable() || consumer.isRightEnable()) {
-                    return true;
-                }
+            if (handle) {
+                startNestedScroll(axes, type);
+                return true;
             }
         }
         return false;
@@ -514,12 +515,14 @@ public class SmartSwipeWrapper extends ViewGroup {
     protected boolean mNestedFlyConsumed;
 
     public void onNestedScrollAccepted(View child, View target, int axes, int type) {
+        mNestedInProgress = true;
         mNestedFlyConsumed = false;
         mCurNestedType = type;
         helperOnNestedScrollAccepted(child, target, axes, type);
     }
 
     public void onStopNestedScroll(View target, int type) {
+        mNestedInProgress = false;
         helperOnStopNestedScroll(target, type);
         if (type == mCurNestedType) {
             mCurNestedType = NESTED_TYPE_INVALID;
@@ -531,15 +534,26 @@ public class SmartSwipeWrapper extends ViewGroup {
 
     @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.onNestedPreFling(target, velocityX, velocityY);
+        }
         return false;
     }
 
     @Override
     public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.onNestedFling(target, velocityX, velocityY, consumed);
+        }
         return false;
     }
 
+    protected int[] mParentOffsetInWindow = new int[2];
+
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        helperOnNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
+        dxUnconsumed += mParentOffsetInWindow[0];
+        dyUnconsumed += mParentOffsetInWindow[1];
         if (dxUnconsumed != 0 || dyUnconsumed != 0) {
             if (type == ViewCompat.TYPE_NON_TOUCH) {
                 //fling nested scroll has not been consumed
@@ -547,19 +561,33 @@ public class SmartSwipeWrapper extends ViewGroup {
             }
             int[] consumed = new int[2];
             wrapperNestedScroll(dxUnconsumed, dyUnconsumed, consumed, type);
-            dxConsumed += consumed[0];
-            dyConsumed += consumed[1];
-            dxUnconsumed -= consumed[0];
-            dyUnconsumed -= consumed[1];
         }
-        helperOnNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
     }
 
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed, int type) {
-        if (mHelper != null && mHelper.getSwipeConsumer().getDirection() != DIRECTION_NONE) {
-            wrapperNestedScroll(dx, dy, consumed, type);
+        int consumedX = 0, consumedY = 0;
+        boolean helperConsumed = false;
+        if (mHelper == null || mHelper.getSwipeConsumer().getProgress() == 0) {
+            helperConsumed = true;
+            Arrays.fill(consumed, 0);
+            helperOnNestedPreScroll(target, dx, dy, consumed, type);
+            consumedX += consumed[0];
+            consumedY += consumed[1];
         }
-        helperOnNestedPreScroll(target, dx, dy, consumed, type);
+        if (mHelper != null && mHelper.getSwipeConsumer().getDirection() != DIRECTION_NONE) {
+            Arrays.fill(consumed, 0);
+            wrapperNestedScroll(dx - consumedX, dy - consumedY, consumed, type);
+            consumedX -= consumed[0];
+            consumedY -= consumed[1];
+        }
+        if (!helperConsumed) {
+            Arrays.fill(consumed, 0);
+            helperOnNestedPreScroll(target, dx - consumedX, dy - consumedY, consumed, type);
+            consumedX += consumed[0];
+            consumedY += consumed[1];
+        }
+        consumed[0] = consumedX;
+        consumed[1] = consumedY;
     }
 
     private void wrapperNestedScroll(int dxUnconsumed, int dyUnconsumed, int[] consumed, int type) {
@@ -582,6 +610,7 @@ public class SmartSwipeWrapper extends ViewGroup {
                     if (mHelper.getSwipeConsumer().getProgress() >= 1) {
                         mNestedFlyConsumed = true;
                         mHelper.nestedScrollingRelease();
+                        mHelper = null;
                     } else {
                         mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, fly);
                     }
@@ -616,7 +645,7 @@ public class SmartSwipeWrapper extends ViewGroup {
 
     protected void helperOnNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+            dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, mParentOffsetInWindow);
         }
     }
 
@@ -624,5 +653,85 @@ public class SmartSwipeWrapper extends ViewGroup {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.onStopNestedScroll(target);
         }
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes) {
+        return startNestedScroll(axes, ViewCompat.TYPE_TOUCH);
+    }
+
+
+    public boolean startNestedScroll(int axes, int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.startNestedScroll(axes);
+        }
+        return false;
+    }
+
+    @Override
+    public void stopNestedScroll() {
+        stopNestedScroll(ViewCompat.TYPE_TOUCH);
+    }
+
+    public void stopNestedScroll(int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            super.stopNestedScroll();
+        }
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent() {
+        return hasNestedScrollingParent(ViewCompat.TYPE_TOUCH);
+    }
+
+    public boolean hasNestedScrollingParent(int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.hasNestedScrollingParent();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
+                                        int dyUnconsumed, int[] offsetInWindow) {
+        return dispatchNestedScroll(dxConsumed, dyConsumed,
+                dxUnconsumed, dyUnconsumed, offsetInWindow, ViewCompat.TYPE_TOUCH);
+    }
+
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
+                                        int dyUnconsumed, int[] offsetInWindow, int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.dispatchNestedScroll(dxConsumed, dyConsumed,
+                    dxUnconsumed, dyUnconsumed, offsetInWindow);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+        return dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, ViewCompat.TYPE_TOUCH);
+    }
+
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow, int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.dispatchNestedFling(velocityX, velocityY, consumed);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.dispatchNestedPreFling(velocityX, velocityY);
+        }
+        return false;
     }
 }
