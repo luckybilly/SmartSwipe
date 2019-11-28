@@ -894,9 +894,14 @@ public class SwipeHelper {
         dispatchViewReleased(xvel, yvel);
     }
 
+
+
+    public boolean nestedScrollingTrySwipe(int dx, int dy, boolean fly) {
+        return trySwipe(fly ? POINTER_NESTED_FLY : POINTER_NESTED_SCROLL, false, 0, 0, dx, dy, false);
+    }
     public boolean nestedScrollingDrag(int dx, int dy, int[] consumed, boolean fly) {
         if (mDragState == STATE_IDLE) {
-            return trySwipe(fly ? POINTER_NESTED_FLY : POINTER_NESTED_SCROLL, false, 0, 0, dx, dy, false);
+            return nestedScrollingTrySwipe(dx, dy, fly);
         }
         int clampedX = 0, clampedY = 0;
         if (mClampedDistanceX != 0 || dx != 0) {

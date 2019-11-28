@@ -19,7 +19,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.billy.android.swipe.SwipeConsumer.*;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_BOTTOM;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_LEFT;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_NONE;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_RIGHT;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_TOP;
+import static com.billy.android.swipe.SwipeConsumer.PROGRESS_OPEN;
 
 /**
  * a wrapper to wrap the content view, handle motion events to do swipe business by {@link SwipeHelper} and {@link SwipeConsumer}
@@ -517,6 +522,7 @@ public class SmartSwipeWrapper extends ViewGroup {
     public void onNestedScrollAccepted(View child, View target, int axes, int type) {
         mNestedInProgress = true;
         mNestedFlyConsumed = false;
+        flyToOpen = flyToClose = null;
         mCurNestedType = type;
         helperOnNestedScrollAccepted(child, target, axes, type);
     }
@@ -590,6 +596,9 @@ public class SmartSwipeWrapper extends ViewGroup {
         consumed[1] = consumedY;
     }
 
+    private Boolean flyToOpen, flyToClose;
+
+
     private void wrapperNestedScroll(int dxUnconsumed, int dyUnconsumed, int[] consumed, int type) {
         if (mCurNestedType == NESTED_TYPE_INVALID) {
             //resolve problem: miss a call of: onStartNestedScroll(type = 1) and onNestedScrollAccepted(type=0)
@@ -602,27 +611,43 @@ public class SmartSwipeWrapper extends ViewGroup {
             //  onStopNestedScroll(type=1)
             mCurNestedType = type;
             mNestedFlyConsumed = false;
+            flyToOpen = flyToClose = null;
         }
         boolean fly = type == ViewCompat.TYPE_NON_TOUCH;
         if (mHelper != null) {
+            SwipeConsumer consumer = mHelper.getSwipeConsumer();
+            float maxProgress = PROGRESS_OPEN + consumer.getOverSwipeFactor();
             if (fly) {
+                if (flyToOpen == null) {
+                    //scroll trending:
+                    // ↓: y < 0, ↑: y > 0
+                    // →: x < 0, ←: x > 0
+                    switch (consumer.getDirection()) {
+                        case DIRECTION_TOP:     flyToOpen = dyUnconsumed < 0; flyToClose = dyUnconsumed > 0; if(dyUnconsumed == 0) return; break;
+                        case DIRECTION_BOTTOM:  flyToOpen = dyUnconsumed > 0; flyToClose = dyUnconsumed < 0; if(dyUnconsumed == 0) return; break;
+                        case DIRECTION_LEFT:    flyToOpen = dxUnconsumed < 0; flyToClose = dxUnconsumed > 0; if(dxUnconsumed == 0) return; break;
+                        case DIRECTION_RIGHT:   flyToOpen = dxUnconsumed > 0; flyToClose = dxUnconsumed < 0; if(dxUnconsumed == 0) return; break;
+                        default: flyToOpen = flyToClose = false;
+                    }
+                }
                 if (!mNestedFlyConsumed) {
-                    if (mHelper.getSwipeConsumer().getProgress() >= 1) {
+                    mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, true);
+                    if (flyToOpen && consumer.getProgress() >= maxProgress || flyToClose && consumer.getProgress() <= 0) {
                         mNestedFlyConsumed = true;
                         mHelper.nestedScrollingRelease();
-                        mHelper = null;
-                    } else {
-                        mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, fly);
                     }
                 }
             } else {
-                mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, fly);
+                mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, false);
+                if (consumer.getProgress() >= maxProgress) {
+                    mHelper = null;
+                }
             }
         } else {
             for (SwipeHelper helper : mHelpers) {
                 if (helper != null) {
                     //try to determined which SwipeHelper will handle this fake drag via nested scroll
-                    if (helper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, type == ViewCompat.TYPE_NON_TOUCH)) {
+                    if (helper.nestedScrollingTrySwipe(-dxUnconsumed, -dyUnconsumed, type == ViewCompat.TYPE_NON_TOUCH)) {
                         mHelper = helper;
                         break;
                     }
