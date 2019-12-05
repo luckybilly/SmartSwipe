@@ -8,8 +8,8 @@ android {
         minSdkVersion rootProject.minVersion
         targetSdkVersion rootProject.targetVersion
         applicationId "com.billy.android.swipe.demo"
-        versionCode 10003
-        versionName "1.0.3"
+        versionCode 10100
+        versionName "1.1.0"
     }
 
     signingConfigs {
@@ -48,7 +48,7 @@ dependencies {
 
 //    implementation project(':smart-swipe-refresh-ext')
 //    implementation project(':smart-swipe')
-    implementation 'com.billy.android:smart-swipe:1.0.8'
+    implementation 'com.billy.android:smart-swipe:1.1.0'
     implementation 'com.billy.android:smart-swipe-refresh-ext:1.0.0'
 
     //switch to android support environment, should delete configs within projectRoot/gradle.properties as below:
@@ -61,7 +61,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 //    implementation project(':smart-swipe-x')
-    implementation 'com.billy.android:smart-swipe-x:1.0.0'
+    implementation 'com.billy.android:smart-swipe-x:1.1.0'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-3'
 }
