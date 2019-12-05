@@ -10,12 +10,29 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.SmartSwipeWrapper;
 import com.billy.android.swipe.SwipeConsumer;
-import com.billy.android.swipe.demo.consumer.*;
+import com.billy.android.swipe.consumer.DoorConsumer;
+import com.billy.android.swipe.consumer.DrawerConsumer;
+import com.billy.android.swipe.consumer.ShuttersConsumer;
+import com.billy.android.swipe.consumer.SlidingConsumer;
+import com.billy.android.swipe.consumer.SpaceConsumer;
+import com.billy.android.swipe.consumer.StretchConsumer;
+import com.billy.android.swipe.demo.consumer.DoorConsumerActivity;
+import com.billy.android.swipe.demo.consumer.DrawerConsumerActivity;
+import com.billy.android.swipe.demo.consumer.ShuttersConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SlidingConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SpaceConsumerActivity;
+import com.billy.android.swipe.demo.consumer.StretchConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SwipeBackBezierConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SwipeBackDoorConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SwipeBackShuttersConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SwipeBackStayConsumerActivity;
+import com.billy.android.swipe.demo.consumer.SwipeBackTranslucentConsumerActivity;
+import com.billy.android.swipe.demo.consumer.TranslucentConsumerActivity;
 import com.billy.android.swipe.listener.SimpleSwipeListener;
-import com.billy.android.swipe.consumer.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -71,7 +88,6 @@ public class MainActivity extends BaseActivity {
                 .setWind(5,true,true)
                 )
         ;
-        fallingView.startFalling();
 
         //manage the app cover
         View mCover = findViewById(R.id.cover);
@@ -85,6 +101,7 @@ public class MainActivity extends BaseActivity {
                             mCurrentDrawerConsumer.unlockAllDirections();
                         }
                         fallingView.refresh();
+                        fallingView.stopFalling();
                     }
 
                     @Override
@@ -92,6 +109,7 @@ public class MainActivity extends BaseActivity {
                         if (mCurrentDrawerConsumer != null) {
                             mCurrentDrawerConsumer.lockAllDirections();
                         }
+                        fallingView.startFalling();
                     }
                 })
         ;
@@ -109,7 +127,29 @@ public class MainActivity extends BaseActivity {
         //create top menu view: Space on top drag
         View topMenu = LayoutInflater.from(this).inflate(R.layout.layout_main_menu, null);
         topMenu.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, size));
-        SmartSwipeWrapper topMenuWrapper = SmartSwipe.wrap(topMenu).addConsumer(new SpaceConsumer()).enableTop().getWrapper();
+//        SmartSwipeWrapper topMenuWrapper = SmartSwipe.wrap(topMenu).addConsumer(new SpaceConsumer()).enableTop().getWrapper();
+        SmartSwipeWrapper topMenuWrapper = SmartSwipe.wrap(topMenu)
+                .addConsumer(new SpaceConsumer())
+                .enableTop()
+                //enable & lock bottom, and enable bottom nested fly,
+                // let it to consume bottom nested fly event
+                // try it with demo apk!
+                .enableBottom().enableNestedScrollBottom(false).enableNestedFlyBottom(true)
+                .addListener(new SimpleSwipeListener() {
+
+                    @Override
+                    public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        if (direction == SwipeConsumer.DIRECTION_BOTTOM) {
+                            wrapper.setNestedScrollingEnabled(false);
+                        }
+                    }
+
+                    @Override
+                    public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        wrapper.setNestedScrollingEnabled(true);
+                    }
+                })
+                .getWrapper();
 
         //create bottom menu view: Space on bottom drag
         View bottomMenu = LayoutInflater.from(this).inflate(R.layout.layout_main_menu, null);

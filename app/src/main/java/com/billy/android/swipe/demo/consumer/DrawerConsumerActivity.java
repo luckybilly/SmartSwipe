@@ -4,13 +4,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.*;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.billy.android.swipe.*;
+
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeRefresh;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
+import com.billy.android.swipe.SwipeConsumerExclusiveGroup;
 import com.billy.android.swipe.consumer.DrawerConsumer;
 import com.billy.android.swipe.consumer.SlidingConsumer;
+import com.billy.android.swipe.consumer.StretchConsumer;
 import com.billy.android.swipe.demo.BaseRecyclerViewActivity;
 import com.billy.android.swipe.demo.R;
 
@@ -39,6 +53,8 @@ public class DrawerConsumerActivity extends BaseRecyclerViewActivity {
                 .getSwipeConsumer().as(SlidingConsumer.class)
                 .setDrawerExpandable(false)
                 .setEdgeAffinity(true)
+                .addConsumer(new StretchConsumer())
+                .enableVertical()
         ;
     }
 

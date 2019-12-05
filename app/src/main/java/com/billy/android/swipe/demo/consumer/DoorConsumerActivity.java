@@ -35,14 +35,11 @@ public class DoorConsumerActivity extends BaseRecyclerViewActivity {
                 //get SwipeConsumer
                 .getSwipeConsumer().as(SlidingConsumer.class)
                 .setEdgeAffinity(true)
-                //disable nested touch scroll
-                .setDisableNestedScroll(true)
-                //disable nested non-touch scroll
-                .setDisableNestedFly(true)
-                //add StretchConsumer as the secondary SwipeConsumer to handle the nested scroll event
+                //(because of: SmartSwipeRefresh disabled NestedFling for direction top and left as default)
+                //we can add StretchConsumer as the secondary SwipeConsumer to handle the top NestedFling event
                 .addConsumer(new StretchConsumer())
-                //enable StretchConsumer top & bottom directions
-                .enableVertical()
+                //enable StretchConsumer top
+                .enableTop()
                 ;
     }
 

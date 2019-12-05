@@ -2,12 +2,13 @@ package com.billy.android.swipe.demo.consumer;
 
 import android.os.Bundle;
 import android.view.View;
+
 import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.SmartSwipeRefresh;
 import com.billy.android.swipe.SmartSwipeWrapper;
 import com.billy.android.swipe.SwipeConsumer;
 import com.billy.android.swipe.consumer.SlidingConsumer;
-import com.billy.android.swipe.consumer.SpaceConsumer;
+import com.billy.android.swipe.consumer.StretchConsumer;
 import com.billy.android.swipe.consumer.TranslucentSlidingConsumer;
 import com.billy.android.swipe.demo.BaseRecyclerViewActivity;
 import com.billy.android.swipe.demo.R;
@@ -35,9 +36,9 @@ public class TranslucentConsumerActivity extends BaseRecyclerViewActivity {
                 .getSwipeConsumer()
                 .as(SlidingConsumer.class)
                 .setEdgeAffinity(true)
-                .setDisableNestedScroll(true)
-                .setDisableNestedFly(true)
-                .addConsumer(new SpaceConsumer())
+                //disable nested non-touch scroll
+                .enableNestedFlyVertical(false)
+                .addConsumer(new StretchConsumer())
                 .enableVertical()
         ;
     }
