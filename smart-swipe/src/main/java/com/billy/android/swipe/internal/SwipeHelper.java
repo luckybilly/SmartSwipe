@@ -2,9 +2,13 @@ package com.billy.android.swipe.internal;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.*;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.OverScroller;
+
 import com.billy.android.swipe.SwipeConsumer;
 
 import java.util.Arrays;
@@ -69,7 +73,6 @@ public class SwipeHelper {
 
     private final SwipeConsumer mSwipeConsumer;
 
-    //    private View mCapturedView;
     private boolean mReleaseInProgress;
 
     private final ViewGroup mParentView;
@@ -891,25 +894,30 @@ public class SwipeHelper {
         dispatchViewReleased(xvel, yvel);
     }
 
+
+
+    public boolean nestedScrollingTrySwipe(int dx, int dy, boolean fly) {
+        return trySwipe(fly ? POINTER_NESTED_FLY : POINTER_NESTED_SCROLL, false, 0, 0, dx, dy, false);
+    }
     public boolean nestedScrollingDrag(int dx, int dy, int[] consumed, boolean fly) {
-        if (mDragState == STATE_IDLE && !trySwipe(fly ? POINTER_NESTED_FLY : POINTER_NESTED_SCROLL, false, 0, 0, dx, dy, false)) {
-            return false;
+        if (mDragState == STATE_IDLE) {
+            return nestedScrollingTrySwipe(dx, dy, fly);
         }
         int clampedX = 0, clampedY = 0;
         if (mClampedDistanceX != 0 || dx != 0) {
             clampedX = mSwipeConsumer.clampDistanceHorizontal(mClampedDistanceX + dx, dx);
-            consumed[0] = mClampedDistanceX - clampedX;
+            consumed[0] = clampedX - mClampedDistanceX;
         }
         if (mClampedDistanceY != 0 || dy != 0) {
             clampedY = mSwipeConsumer.clampDistanceVertical(mClampedDistanceY + dy, dy);
-            consumed[1] = mClampedDistanceY - clampedY;
+            consumed[1] = clampedY - mClampedDistanceY;
         }
         if (mClampedDistanceX == 0 && mClampedDistanceY == 0 && consumed[0] == 0 && consumed[1] == 0) {
             mActivePointerId = INVALID_POINTER;
             setDragState(STATE_IDLE);
             return false;
         } else {
-            dragTo(clampedX, clampedY, -consumed[0], -consumed[1]);
+            dragTo(clampedX, clampedY, consumed[0], consumed[1]);
             return true;
         }
     }

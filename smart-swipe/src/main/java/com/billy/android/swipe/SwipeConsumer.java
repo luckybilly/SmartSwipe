@@ -9,6 +9,7 @@ import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.AbsSeekBar;
+
 import com.billy.android.swipe.calculator.ScaledCalculator;
 import com.billy.android.swipe.calculator.SwipeDistanceCalculator;
 import com.billy.android.swipe.consumer.DrawerConsumer;
@@ -110,7 +111,8 @@ public abstract class SwipeConsumer {
 
     protected Object mTag;
     protected Integer mMaxSettleDuration;
-    protected boolean mDisableNestedScroll, mDisableNestedFly;
+    /** by default: enable nested scroll and nested fly for all direction */
+    protected int mEnableNested = (DIRECTION_ALL << 4) | DIRECTION_ALL;
 
     /** the wrapper width, it`s value assigned via {@link #onMeasure(int, int)}  */
     protected int mWidth;
@@ -124,7 +126,7 @@ public abstract class SwipeConsumer {
      * @return swipe or not
      */
     public boolean tryAcceptSettling(int pointerId, float downX, float downY) {
-        if (isNestedAndDisabled(pointerId)) {
+        if (isNestedAndDisabled(pointerId, mDirection)) {
             return false;
         }
         if (mDisableSwipeOnSettling && getDragState() == SwipeHelper.STATE_SETTLING) {
@@ -134,23 +136,37 @@ public abstract class SwipeConsumer {
     }
 
     public boolean tryAcceptMoving(int pointerId, float downX, float downY, float dx, float dy) {
-        if (isNestedAndDisabled(pointerId)) {
-            return false;
+        int dir = calSwipeDirection(pointerId, downX, downY, dx, dy);
+        boolean handle = dir != DIRECTION_NONE;
+        if (handle) {
+            mDirection = dir;
+        }
+        return handle;
+    }
+    
+    public int calSwipeDirection(int pointerId, float downX, float downY, float dx, float dy) {
+        if (mDirection == DIRECTION_NONE) {
+            if (pointerId == SwipeHelper.POINTER_NESTED_SCROLL && ((mEnableNested) & DIRECTION_ALL) == 0
+                || pointerId == SwipeHelper.POINTER_NESTED_FLY && ((mEnableNested >> 4) & DIRECTION_ALL) == 0) {
+                //nested scrolling or fling, but all direction disabled for nested scrolling & fling
+                return DIRECTION_NONE;
+            }
         }
         float absX = Math.abs(dx);
         float absY = Math.abs(dy);
         if ((mCurSwipeDistanceX != 0 || mCurSwipeDistanceY != 0)) {
             if (dx == 0 && dy == 0) {
-                return false;
+                return DIRECTION_NONE;
             }
             //already swiped, checkout whether the swipe direction as same as last one
             if ((mDirection & DIRECTION_HORIZONTAL) > 0 && absX > absY || (mDirection & DIRECTION_VERTICAL) > 0 && absX < absY) {
-                if (!isDirectionLocked(mDirection)) {
+                if (!isDirectionLocked(mDirection) && !isNestedAndDisabled(pointerId, mDirection)) {
                     //it seams like it wants to continue current swiping, now, check whether any child can scroll
-                    return !canChildScroll(mWrapper, mDirection, (int) downX, (int) downY, dx, dy);
+                    boolean canChildScroll = canChildScroll(mWrapper, mDirection, pointerId, downX, downY, dx, dy);
+                    return canChildScroll ? DIRECTION_NONE : mDirection;
                 }
             }
-            return false;
+            return DIRECTION_NONE;
         }
         int dir = DIRECTION_NONE;
         boolean handle = false;
@@ -201,29 +217,51 @@ public abstract class SwipeConsumer {
                 } else {
                     //no edge size set, check any child can scroll on this direction
                     // (absolutely, also check whether child Wrapper can consume this swipe motion event)
-                    handle = !canChildScroll(mWrapper, dir, (int) downX, (int) downY, dx, dy);
+                    handle = !canChildScroll(mWrapper, dir, pointerId, downX, downY, dx, dy);
                 }
             }
         }
         if (handle) {
-            if (isDirectionLocked(dir)) {
-                handle = false;
-            } else {
-                mDirection = dir;
+            // nested fling and enabled
+            if (pointerId == SwipeHelper.POINTER_NESTED_FLY && isNestedFlyEnable(dir)) {
+                return dir;
             }
+            if (isDirectionLocked(dir)) {
+                return DIRECTION_NONE;
+            }
+            if (isNestedAndDisabled(pointerId, dir)) {
+                return DIRECTION_NONE;
+            }
+            return dir;
         }
-        return handle;
+        return DIRECTION_NONE;
     }
 
-    protected boolean isNestedAndDisabled(int pointerId) {
-        return mDisableNestedScroll && pointerId == SwipeHelper.POINTER_NESTED_SCROLL
-                || mDisableNestedFly && pointerId == SwipeHelper.POINTER_NESTED_FLY;
+    protected boolean isNestedAndDisabled(int pointerId, int direction) {
+        return pointerId == SwipeHelper.POINTER_NESTED_SCROLL && !isNestedScrollEnable(direction)
+                || pointerId == SwipeHelper.POINTER_NESTED_FLY && !isNestedFlyEnable(direction);
     }
 
-    private boolean canChildScroll(ViewGroup parentView, int direction, int downX, int downY, float dx, float dy) {
+    protected boolean canChildScroll(ViewGroup parentView, int direction, int pointerId, float downX, float downY, float dx, float dy) {
         boolean canScroll = false;
-        View topChild = findTopChildUnder(parentView, downX, downY);
-        if (topChild != null) {
+        View topChild = findTopChildUnder(parentView, (int)downX, (int)downY);
+        if (topChild instanceof SmartSwipeWrapper) {
+            SmartSwipeWrapper wrapper = (SmartSwipeWrapper) topChild;
+            SwipeHelper swipeHelper = wrapper.mHelper;
+            SwipeConsumer consumer;
+            if (swipeHelper != null && (consumer = swipeHelper.getSwipeConsumer()) != null ) {
+                int dir = consumer.calSwipeDirection(pointerId, downX, downY, dx, dy);
+                canScroll = dir != DIRECTION_NONE && consumer.getProgress() < PROGRESS_OPEN;
+            } else {
+                List<SwipeConsumer> allConsumers = wrapper.getAllConsumers();
+                for (SwipeConsumer sc : allConsumers) {
+                    if (sc != null && sc.calSwipeDirection(pointerId, downX, downY, dx, dy) != DIRECTION_NONE) {
+                        canScroll = true;
+                        break;
+                    }
+                }
+            }
+        } else if (topChild != null) {
             switch (direction) {
                 case DIRECTION_LEFT:
                 case DIRECTION_RIGHT:
@@ -251,9 +289,9 @@ public abstract class SwipeConsumer {
                     break;
                 default:
             }
-            if (!canScroll && topChild instanceof ViewGroup) {
-                return canChildScroll((ViewGroup) topChild, direction, downX - topChild.getLeft(), downY - topChild.getTop(), dx, dy);
-            }
+        }
+        if (!canScroll && topChild instanceof ViewGroup) {
+            return canChildScroll((ViewGroup) topChild, direction, pointerId, downX - topChild.getLeft(), downY - topChild.getTop(), dx, dy);
         }
         return canScroll;
     }
@@ -743,34 +781,6 @@ public abstract class SwipeConsumer {
         return this;
     }
 
-    public boolean isDisableNestedScroll() {
-        return mDisableNestedScroll;
-    }
-
-    /**
-     * set nested scroll(ViewCompat.TYPE_TOUCH) disable or not
-     * @param disable disable touch mode nested scroll
-     * @return this
-     */
-    public SwipeConsumer setDisableNestedScroll(boolean disable) {
-        this.mDisableNestedScroll = disable;
-        return this;
-    }
-
-    public boolean isDisableNestedFly() {
-        return mDisableNestedFly;
-    }
-
-    /**
-     * set nested fly(ViewCompat.TYPE_NON_TOUCH) disable or not
-     * @param disable disable fly mode nested scroll
-     * @return this
-     */
-    public SwipeConsumer setDisableNestedFly(boolean disable) {
-        this.mDisableNestedFly = disable;
-        return this;
-    }
-
     /**
      * remove all {@link SwipeListener} added via {@link #addListener(SwipeListener)}
      * @return this
@@ -1212,6 +1222,76 @@ public abstract class SwipeConsumer {
     }
     public boolean isBottomLocked() {
         return (mLockDirection & DIRECTION_BOTTOM) != 0;
+    }
+
+    public SwipeConsumer enableNestedScrollLeft(boolean enable) {
+        return enableNestedScroll(DIRECTION_LEFT, enable);
+    }
+    public SwipeConsumer enableNestedScrollRight(boolean enable) {
+        return enableNestedScroll(DIRECTION_RIGHT, enable);
+    }
+    public SwipeConsumer enableNestedScrollTop(boolean enable) {
+        return enableNestedScroll(DIRECTION_TOP, enable);
+    }
+    public SwipeConsumer enableNestedScrollBottom(boolean enable) {
+        return enableNestedScroll(DIRECTION_BOTTOM, enable);
+    }
+    public SwipeConsumer enableNestedScrollHorizontal(boolean enable) {
+        return enableNestedScroll(DIRECTION_HORIZONTAL, enable);
+    }
+    public SwipeConsumer enableNestedScrollVertical(boolean enable) {
+        return enableNestedScroll(DIRECTION_VERTICAL, enable);
+    }
+    public SwipeConsumer enableNestedScrollAllDirections(boolean enable) {
+        return enableNestedScroll(DIRECTION_ALL, enable);
+    }
+
+    private SwipeConsumer enableNestedScroll(int direction, boolean enable) {
+        if (enable) {
+            mEnableNested |= direction;
+        } else {
+            mEnableNested &= ~direction;
+        }
+        return this;
+    }
+
+    public boolean isNestedScrollEnable(int direction) {
+        return (mEnableNested & direction) == direction;
+    }
+
+    public SwipeConsumer enableNestedFlyLeft(boolean enable) {
+        return enableNestedFly(DIRECTION_LEFT, enable);
+    }
+    public SwipeConsumer enableNestedFlyRight(boolean enable) {
+        return enableNestedFly(DIRECTION_RIGHT, enable);
+    }
+    public SwipeConsumer enableNestedFlyTop(boolean enable) {
+        return enableNestedFly(DIRECTION_TOP, enable);
+    }
+    public SwipeConsumer enableNestedFlyBottom(boolean enable) {
+        return enableNestedFly(DIRECTION_BOTTOM, enable);
+    }
+    public SwipeConsumer enableNestedFlyHorizontal(boolean enable) {
+        return enableNestedFly(DIRECTION_HORIZONTAL, enable);
+    }
+    public SwipeConsumer enableNestedFlyVertical(boolean enable) {
+        return enableNestedFly(DIRECTION_VERTICAL, enable);
+    }
+    public SwipeConsumer enableNestedFlyAllDirections(boolean enable) {
+        return enableNestedFly(DIRECTION_ALL, enable);
+    }
+
+    private SwipeConsumer enableNestedFly(int direction, boolean enable) {
+        if (enable) {
+            mEnableNested |= direction << 4;
+        } else {
+            mEnableNested &= ~(direction << 4);
+        }
+        return this;
+    }
+
+    public boolean isNestedFlyEnable(int direction) {
+        return ((mEnableNested >> 4) & direction) == direction;
     }
 
     public boolean isVerticalDirection() {

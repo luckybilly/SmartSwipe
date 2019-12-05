@@ -2,14 +2,18 @@ package com.billy.android.swipe;
 
 import android.content.Context;
 import android.view.View;
+
 import com.billy.android.swipe.calculator.ScaledCalculator;
+import com.billy.android.swipe.consumer.DrawerConsumer;
+import com.billy.android.swipe.consumer.SlidingConsumer;
 import com.billy.android.swipe.listener.SimpleSwipeListener;
 import com.billy.android.swipe.refresh.ClassicFooter;
 import com.billy.android.swipe.refresh.ClassicHeader;
-import com.billy.android.swipe.consumer.DrawerConsumer;
-import com.billy.android.swipe.consumer.SlidingConsumer;
 
-import static com.billy.android.swipe.SwipeConsumer.*;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_BOTTOM;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_LEFT;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_RIGHT;
+import static com.billy.android.swipe.SwipeConsumer.DIRECTION_TOP;
 
 
 /**
@@ -181,9 +185,9 @@ public class SmartSwipeRefresh {
                 .setReleaseMode(SwipeConsumer.RELEASE_MODE_AUTO_CLOSE | SwipeConsumer.RELEASE_MODE_HOLE_OPEN)
                 //set default rebound factor
                 .setOverSwipeFactor(0.5F)
-                //enable nested scroll fling to auto refresh or load more by default
-                // If need to disable, like this: smartSwipeRefresh.getSwipeConsumer().setDisableNestedFly(true)
-                .setDisableNestedFly(false)
+                //disable nested scroll fling to auto refresh
+                .enableNestedFlyTop(false)
+                .enableNestedFlyLeft(false)
                 .as(DrawerConsumer.class);
         ssr.mHorizontal = horizontal;
         if (withDefaultHeaderAndFooter) {

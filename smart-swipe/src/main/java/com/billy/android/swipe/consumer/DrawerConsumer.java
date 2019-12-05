@@ -3,16 +3,19 @@ package com.billy.android.swipe.consumer;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.SmartSwipeWrapper;
 import com.billy.android.swipe.SwipeConsumer;
-import com.billy.android.swipe.internal.SwipeHelper;
 import com.billy.android.swipe.internal.ScrimView;
+import com.billy.android.swipe.internal.SwipeHelper;
 import com.billy.android.swipe.internal.ViewCompat;
 import com.billy.android.swipe.listener.SwipeListener;
 
 import static android.view.View.VISIBLE;
-import static com.billy.android.swipe.SmartSwipeWrapper.*;
+import static com.billy.android.swipe.SmartSwipeWrapper.GONE;
+import static com.billy.android.swipe.SmartSwipeWrapper.INVISIBLE;
+import static com.billy.android.swipe.SmartSwipeWrapper.OnClickListener;
 import static com.billy.android.swipe.internal.SwipeUtil.getReverseDirection;
 
 /**
@@ -480,4 +483,11 @@ public class DrawerConsumer extends SwipeConsumer implements OnClickListener {
         }
     }
 
+    @Override
+    protected boolean canChildScroll(ViewGroup parentView, int direction, int pointerId, float downX, float downY, float dx, float dy) {
+        if (mDirection != DIRECTION_NONE && mWrapper.getContentView() == findTopChildUnder(parentView, (int)downX, (int)downY)) {
+            return false;
+        }
+        return super.canChildScroll(parentView, direction, pointerId, downX, downY, dx, dy);
+    }
 }
