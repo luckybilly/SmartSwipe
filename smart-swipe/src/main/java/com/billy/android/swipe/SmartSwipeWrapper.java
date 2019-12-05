@@ -639,7 +639,7 @@ public class SmartSwipeWrapper extends ViewGroup {
                 }
             } else {
                 mHelper.nestedScrollingDrag(-dxUnconsumed, -dyUnconsumed, consumed, false);
-                if (consumer.getProgress() >= maxProgress) {
+                if (consumer.getProgress() >= maxProgress || consumer.getProgress() <= 0) {
                     mHelper = null;
                 }
             }
