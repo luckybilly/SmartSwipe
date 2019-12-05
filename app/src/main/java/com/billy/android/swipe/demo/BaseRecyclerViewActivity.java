@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.billy.android.swipe.SmartSwipeRefresh;
 import com.billy.android.swipe.demo.consumer.ImageViewerActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +171,9 @@ public abstract class BaseRecyclerViewActivity extends BaseActivity {
         protected void onBindData(Data data, int position) {
             this.data = data;
             if (data.avatar != 0) {
-                ivAvatar.setImageResource(data.avatar);
+                Glide.with(BaseRecyclerViewActivity.this)
+                        .load(data.avatar)
+                        .into(ivAvatar);
             }
             tvName.setText(data.name);
             tvLastMessage.setText(data.lastMessage);
