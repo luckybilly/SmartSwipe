@@ -66,6 +66,8 @@ public class ClassicFooter extends ClassicHeader implements SmartSwipeRefresh.Sm
     @Override
     public void setNoMoreData(boolean noMoreData) {
         this.mNoMoreData = noMoreData;
-        setText(R.string.ssr_footer_no_more_data);
+        //修复了上拉加载始终显示"已全部加载完成"的问题.
+        if (noMoreData)
+            setText(R.string.ssr_footer_no_more_data);
     }
 }
