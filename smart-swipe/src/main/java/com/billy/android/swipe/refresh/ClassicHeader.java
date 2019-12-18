@@ -127,7 +127,9 @@ public class ClassicHeader extends RelativeLayout implements SmartSwipeRefresh.S
 
     @Override
     public void onReset() {
-
+        //修复了:先下拉刷新完成(此时显示为刷新完成),然后调用 startRefresh 时,看到的不是"下拉刷新"而是"刷新完成"的问题.
+        //fix:first pull to refresh finished(hint:Refresh Success),then invoke startRefresh,now will allways see the 'Refresh Success'.so reset the text.
+        setText(com.billy.android.swipe.R.string.ssr_header_pulling);
     }
 
     @Override

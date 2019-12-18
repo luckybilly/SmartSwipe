@@ -66,6 +66,7 @@ public class ClassicFooter extends ClassicHeader implements SmartSwipeRefresh.Sm
     @Override
     public void setNoMoreData(boolean noMoreData) {
         this.mNoMoreData = noMoreData;
-        setText(R.string.ssr_footer_no_more_data);
+        if(noMoreData)
+            setText(R.string.ssr_footer_no_more_data);
     }
 }
