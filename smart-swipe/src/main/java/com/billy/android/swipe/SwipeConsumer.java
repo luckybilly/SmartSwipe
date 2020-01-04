@@ -12,6 +12,7 @@ import android.widget.AbsSeekBar;
 
 import com.billy.android.swipe.calculator.ScaledCalculator;
 import com.billy.android.swipe.calculator.SwipeDistanceCalculator;
+import com.billy.android.swipe.consumer.ActivitySlidingBackConsumer;
 import com.billy.android.swipe.consumer.DrawerConsumer;
 import com.billy.android.swipe.consumer.SlidingConsumer;
 import com.billy.android.swipe.internal.ScrimView;
@@ -118,6 +119,13 @@ public abstract class SwipeConsumer {
     protected int mWidth;
     /** the wrapper height, it`s value assigned via {@link #onMeasure(int, int)}  */
     protected int mHeight;
+
+    /**
+     * set auto close or not when SmartSwipeWrapper.onDetachedFromWindow() has been called.
+     * default is true excepted Activity???BackConsumer(such as {@link ActivitySlidingBackConsumer})
+     */
+    protected boolean mAutoCloseOnWrapperDetachedFromWindow = true;
+
     /**
      * always swipe by default when settling
      * @param pointerId pointer id
@@ -924,6 +932,20 @@ public abstract class SwipeConsumer {
     public SwipeConsumer setHeight(int height) {
         this.mHeight = height;
         return this;
+    }
+
+    /**
+     * if set true, {@link #close()} function will be called when {@link SmartSwipeWrapper} detached from window
+     * @param autoClose auto close or not
+     * @return this
+     */
+    public SwipeConsumer setAutoCloseOnWrapperDetachedFromWindow(boolean autoClose) {
+        this.mAutoCloseOnWrapperDetachedFromWindow = autoClose;
+        return this;
+    }
+
+    public boolean isAutoCloseOnWrapperDetachedFromWindow() {
+        return mAutoCloseOnWrapperDetachedFromWindow;
     }
 
     public SwipeConsumer setLeftOpen() {
