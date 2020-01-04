@@ -25,6 +25,7 @@ public class ActivitySlidingBackConsumer extends TranslucentSlidingConsumer {
     protected boolean mHorizontalSwiping;
 
     public ActivitySlidingBackConsumer(Activity activity) {
+        this.mAutoCloseOnWrapperDetachedFromWindow = false;
         this.mActivity = activity;
         this.mActivityTranslucentUtil = new ActivityTranslucentUtil(activity);
         showScrimAndShadowOutsideContentView();

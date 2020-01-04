@@ -14,6 +14,7 @@ public class ActivityShuttersBackConsumer extends ShuttersConsumer {
     protected Activity mActivity;
 
     public ActivityShuttersBackConsumer(Activity activity) {
+        this.mAutoCloseOnWrapperDetachedFromWindow = false;
         this.mActivity = activity;
         this.mActivityTranslucentUtil = new ActivityTranslucentUtil(activity);
     }

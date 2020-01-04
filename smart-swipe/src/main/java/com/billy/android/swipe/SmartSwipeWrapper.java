@@ -274,7 +274,9 @@ public class SmartSwipeWrapper extends ViewGroup {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         for (SwipeConsumer consumer : mConsumers) {
-            consumer.close();
+            if (consumer.isAutoCloseOnWrapperDetachedFromWindow()) {
+                consumer.close();
+            }
         }
     }
 

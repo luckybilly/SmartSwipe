@@ -14,6 +14,7 @@ public class ActivityDoorBackConsumer extends DoorConsumer {
     protected Activity mActivity;
 
     public ActivityDoorBackConsumer(Activity activity) {
+        this.mAutoCloseOnWrapperDetachedFromWindow = false;
         this.mActivity = activity;
         this.mActivityTranslucentUtil = new ActivityTranslucentUtil(activity);
     }
